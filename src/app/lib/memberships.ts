@@ -1,4 +1,4 @@
-import { eq } from "drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { getDb } from "@/app/lib/db";
 import { memberships, type Membership } from "@/app/lib/schema";
 

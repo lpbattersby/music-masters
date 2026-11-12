@@ -8,6 +8,8 @@ import { getIronSession } from "iron-session";
 
 import { sessionOptions, type SessionData } from "@/app/lib/auth/session";
 import { getUserByUsername } from "../users";
+import { getGroupForUser } from "../groups";
+import { notFound } from "next/navigation";
 
 export const basePath = "/";
 
@@ -48,3 +50,19 @@ export const getCurrentUser = cache(async () => {
     displayName: user.displayName,
   }
 })
+
+export async function getCurrentUserGroup(groupId: number) {
+  const user = await getCurrentUser()
+
+  if (!Number.isSafeInteger(groupId) || groupId <= 0) {
+    notFound()
+  }
+
+  const group = await getGroupForUser(groupId, user.userId)
+
+  if (!group) {
+    notFound()
+  }
+
+  return group
+}

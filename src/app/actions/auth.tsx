@@ -105,3 +105,12 @@ export async function login(state: FormState, formData: FormData) {
   revalidatePath("/dashboard");
   redirect("/dashboard");
 }
+
+export async function logout() {
+  "use server";
+
+  const session = await getSession();
+  session.destroy();
+  revalidatePath("/");
+  redirect("/");
+}

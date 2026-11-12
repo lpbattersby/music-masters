@@ -3,6 +3,7 @@ import { getCurrentUser } from "@/app/lib/auth/dal";
 import GroupList from "./group-list";
 import MMFab from "@/app/fab/fab";
 import Divider from '@mui/material/Divider'
+import CreateGroupForm from "@/app/(app)/dashboard/group-form";
 
 export default async function Dashboard() {
     const user = await getCurrentUser()
@@ -13,8 +14,8 @@ export default async function Dashboard() {
         <b className="text-2xl">Your Groups</b>
         <Divider sx={{ width: '100%' }} />
         <GroupList groups={groups}/>
-        <MMFab id="add-group" label="Add Group" text="Create Group">
-          <p>Form or content for adding a new group goes here.</p>
+        <MMFab id="add-group" label="Create Group" text="Create Group">
+          <CreateGroupForm />
         </MMFab>
     </main>
     );

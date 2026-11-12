@@ -31,9 +31,10 @@ export const SignupFormSchema = createInsertSchema(users, {
 export type SignupInput = z.infer<typeof SignupFormSchema>
 
 export const CreateGroupFormSchema = createInsertSchema(groups, {
-  name: (schema) => schema.trim().min(2),
-  submissionWindowDays: z.coerce.number().int().positive(),
-  votingWindowDays: z.coerce.number().int().positive(),
+  name: (schema) => schema.trim().min(2, { error: 'Name must be at least 2 characters long.' }),
+  description: (schema) => schema.trim().min(3, { error: 'Description must be at least 3 characters long.' }),
+  submissionWindowDays: z.coerce.number().int().positive({ error: 'Submission window must be at least 1 day.' }),
+  votingWindowDays: z.coerce.number().int().positive({ error: 'Voting window must be at least 1 day.' }),
 }).pick({
   name: true,
   description: true,

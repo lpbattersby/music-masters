@@ -15,6 +15,7 @@ export default defineConfig({
     trace: "on-first-retry",
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"] } }],
+  timeout: 5_000,
   webServer: {
     command: "npm run dev -- --port 3001",
     url: "http://localhost:3001",
