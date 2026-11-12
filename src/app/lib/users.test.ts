@@ -35,6 +35,10 @@ describe("users queries", () => {
     expect(foundByUsername).toMatchObject({ username: "a_username", displayName: "A" });
   });
 
+  it("returns undefined for a missing username", async () => {
+    expect(await getUserByUsername("non_existent_username")).toBeUndefined();
+  });
+
   it("enforces unique usernames", async () => {
     await createUser({ username: "dup_username", displayName: "One", password: "password" });
     await expect(

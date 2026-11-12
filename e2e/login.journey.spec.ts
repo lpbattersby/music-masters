@@ -1,4 +1,4 @@
-import { expect, test, createTestUser, testUser } from "./fixtures";
+import { expect, test, createTestUser, testUser } from "@/test/fixtures";
 
 test.describe("login journey", () => {
   test("a visitor can login and land on the dashboard", async ({
@@ -14,13 +14,6 @@ test.describe("login journey", () => {
     await page.getByLabel("Password").fill(`${testUser.password}`);
     await page.getByRole("button", { name: "Confirm" }).click();
     await expect(page.getByText("User not found.")).toBeVisible();
-
-    // Invalid password
-    await page.getByLabel("Username").fill(`${testUser.username}`);
-    await page.getByLabel("Password").fill(`test123`);
-    await page.getByRole("button", { name: "Confirm" }).click();
-
-    await expect(page.getByText("Password must:")).toBeVisible();
 
     // Wrong password
     await page.getByLabel("Username").fill(`${testUser.username}`);

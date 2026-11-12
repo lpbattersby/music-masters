@@ -1,4 +1,4 @@
-import { expect, test, createTestUser, testUser } from "./fixtures";
+import { expect, test, createTestUser, testUser } from "@/test/fixtures";
 
 test.describe("create group journey", () => {
   test.skip("a visitor can create a group and see the group on the dashboard", async ({

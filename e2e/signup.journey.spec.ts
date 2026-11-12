@@ -1,4 +1,4 @@
-import { expect, test } from "./fixtures";
+import { expect, test } from "@/test/fixtures";
 
 test.describe("sign up journey", () => {
   test("a visitor can sign up and land on the dashboard", async ({

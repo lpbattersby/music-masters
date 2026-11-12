@@ -3,8 +3,7 @@ import { mkdir } from 'node:fs/promises'
 import { createClient } from '@libsql/client'
 import { drizzle } from 'drizzle-orm/libsql'
 import { migrate } from 'drizzle-orm/libsql/migrator'
-import bcrypt from 'bcrypt'
-import { users } from '../src/app/lib/schema'
+import { createUser } from '@/app/lib/users'
 
 export const testUser = {
   username: 'existing-user',
@@ -34,8 +33,6 @@ export const test = base.extend<{ resetDatabase: void }>({
     { auto: true },
   ],
 })
-
-import { createUser } from '../src/app/lib/users'
 
 export const createTestUser = () => createUser(testUser)
 
