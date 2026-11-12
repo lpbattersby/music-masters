@@ -27,14 +27,14 @@ export default async function GroupPage({
       </Link>
       <GroupInfo group={group} isMember={isMember} />
       <Paper component="section" aria-labelledby="current-round-title" sx={{ p: 2 }}>
-        <Typography variant="h3" id="current-round-title">Current round</Typography>
+        <Typography variant="h3" component="h2" id="current-round-title">Current round</Typography>
         <Typography color="text.secondary" sx={{ mt: 2, mb: 3 }}>No round yet.</Typography>
         {user.userId === group.createdBy && (
           <Button variant="contained" disabled>Create round</Button>
         )}
       </Paper>
       <Paper component="section" aria-labelledby="members-title" variant="outlined" sx={{ bgcolor: 'transparent', p: 2 }}>
-          <Typography variant="h3" id="members-title">Members</Typography>
+          <Typography variant="h3" component="h2" id="members-title">Members</Typography>
           <List dense sx={{ mt: 2 }}>
             {members.map((member) => (
               <ListItem key={member.userId} disableGutters><ListItemText primary={member.displayName} /></ListItem>
