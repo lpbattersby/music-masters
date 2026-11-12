@@ -3,13 +3,11 @@ import { NextResponse } from "next/server";
 import { createUser, listUsers } from "@/lib/users";
 import { createUserSchema } from "@/lib/validation";
 
-// GET /api/users — list all users.
 export async function GET() {
   const users = await listUsers();
   return NextResponse.json({ users });
 }
 
-// POST /api/users — create a user. Body: { email, displayName }.
 export async function POST(request: Request) {
   const json = await request.json().catch(() => null);
 
@@ -38,10 +36,6 @@ export async function POST(request: Request) {
   }
 }
 
-/**
- * Drizzle wraps driver errors, so the SQLite constraint code lives on the
- * nested `cause` chain rather than the top-level message. Walk the chain.
- */
 function isUniqueConstraintError(error: unknown): boolean {
   let current: unknown = error;
   while (current instanceof Error) {

@@ -3,13 +3,6 @@ import { desc, eq } from "drizzle-orm";
 import { getDb } from "@/lib/db";
 import { users, type User } from "@/lib/schema";
 
-/**
- * Example entity queries (Drizzle ORM).
- *
- * Shows the pattern: typed, composable queries against the `users` table from
- * `@/lib/schema`. Copy this file as a starting point for your own entities.
- */
-
 export async function createUser(input: {
   email: string;
   displayName: string;

@@ -39,4 +39,12 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# database (sqlite / libsql)
 /data
+
+# testing (playwright)
+/test-results
+/playwright-report
+/blob-report
+/playwright/.cache
