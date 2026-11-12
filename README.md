@@ -1,6 +1,8 @@
 # Music Masters
 
-A Next.js application.
+[![Tests](https://github.com/lpbattersby/music-masters/actions/workflows/tests.yml/badge.svg)](https://github.com/lpbattersby/music-masters/actions/workflows/tests.yml)
+
+A game where you compete in themed rounds to see who can submit the best song for the category.
 
 ## Getting Started
 
