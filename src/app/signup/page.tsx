@@ -1,7 +1,7 @@
 import Image from "next/image";
 import SignupForm from '@/app/signup/signup-form';
 
-export default function Home() {
+export default function SignUp() {
   return (
     <main className="flex min-w-half flex-col items-center justify-center gap-4 bg-white p-2 pb-10 m-5 rounded-4xl max-w-md">
       <Image

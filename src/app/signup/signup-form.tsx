@@ -15,7 +15,7 @@ export default function SignupForm() {
   })
 
   return (
-    <form action={action} className="flex flex-col justify-center items-center gap-6">
+    <form aria-label="Sign up" action={action} className="flex flex-col justify-center items-center gap-6">
       <b className="text-2xl">Sign Up</b>
       <br />
       <TextField 
@@ -47,6 +47,9 @@ export default function SignupForm() {
         label="Password" 
         type="password" 
         error={!!state?.errors?.password}
+        slotProps={{
+          formHelperText: { component: 'div' }
+        }}
         helperText={
           state?.errors?.password && 
           <>

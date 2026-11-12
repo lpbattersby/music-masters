@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 test.describe("landing page", () => {
   test("shows the login and sign up calls to action", async ({ page }) => {
@@ -14,6 +14,15 @@ test.describe("landing page", () => {
     await expect(page.getByRole("link", { name: "Login" })).toHaveAttribute(
       "href",
       "/login",
+    );
+  });
+
+  test("the sign up CTA links to /signup", async ({ page }) => {
+    await page.goto("/");
+
+    await expect(page.getByRole("link", { name: "Sign Up" })).toHaveAttribute(
+      "href",
+      "/signup",
     );
   });
 });
