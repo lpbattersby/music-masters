@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist } from "next/font/google";
+import Providers from "./providers";
 import "./globals.css";
+import MMAppBar from './appbar/appbar'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,7 +17,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={geistSans.variable + " flex items-center justify-center"}>
-      <body>{children}</body>
+      <body className="min-h-screen w-full flex flex-col items-center">
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }

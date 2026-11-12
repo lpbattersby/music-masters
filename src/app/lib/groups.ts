@@ -1,6 +1,8 @@
 import { desc, eq } from "drizzle-orm";
 import { getDb } from "@/app/lib/db";
 import { groups, type Group } from "@/app/lib/schema";
+import { memberships } from "@/app/lib/schema";
+import { getTableColumns } from "drizzle-orm";
 
 export async function createGroup(input: {
   name: string;
@@ -27,4 +29,15 @@ export async function getGroupByName(name: string): Promise<Group | undefined> {
 export async function listGroups(): Promise<Group[]> {
   const db = await getDb();
   return db.select().from(groups).orderBy(desc(groups.createdAt));
+}
+
+export async function getGroupsByUserId(userId: number): Promise<Group[]> {
+  const db = await getDb()
+
+  return db
+    .select(getTableColumns(groups))
+    .from(groups)
+    .innerJoin(memberships, eq(groups.groupId, memberships.groupId))
+    .where(eq(memberships.userId, userId))
+    .orderBy(desc(groups.createdAt))
 }

@@ -28,6 +28,6 @@ test.describe("login journey", () => {
     await page.getByRole("button", { name: "Confirm" }).click();
 
     await expect(page).toHaveURL('/dashboard')
-    await expect(page.getByRole('main')).toContainText(`hi ${testUser.displayName}`)
+    await expect(page.getByRole('main')).toContainText(`Your Groups`)
   });
 });

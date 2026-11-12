@@ -19,8 +19,9 @@ export default defineConfig({
     command: "npm run dev -- --port 3001",
     url: "http://localhost:3001",
     reuseExistingServer: false,
-    timeout: 5_000,
+    timeout: 120_000,
     env: {
+      E2E_TEST: '1',
       DATABASE_URL: "file:./data/e2e.db",
     },
   },

@@ -17,3 +17,25 @@
     background:
       linear-gradient(150deg, #e74346 0 25%, #ffbb5b 0 50%, #e74346 0 75%, #ffbb5b 0 100%);
 }
+
+.animated-appbar::after {
+  content: '';
+  display: block;
+  height: 3px;
+  flex-shrink: 0;
+  background: linear-gradient(
+    150deg,
+    #e74346 0 25%,
+    #ffbb5b 0 50%,
+    #e74346 0 75%,
+    #ffbb5b 0 100%
+  );
+  background-size: 100% 300%;
+  animation: shift 12s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animated-appbar::after {
+    animation: none;
+  }
+}

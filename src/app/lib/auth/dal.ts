@@ -7,6 +7,7 @@ import { connection } from "next/server"
 import { getIronSession } from "iron-session";
 
 import { sessionOptions, type SessionData } from "@/app/lib/auth/session";
+import { getUserByUsername } from "../users";
 
 export const basePath = "/";
 
@@ -32,3 +33,18 @@ export const verifySession = cache(async () => {
 
   return { username: session.username };
 });
+
+export const getCurrentUser = cache(async () => {
+  const { username } = await verifySession()
+  const user = await getUserByUsername(username)
+
+  if (!user) {
+    redirect('/login')
+  }
+
+  return {
+    userId: user.userId,
+    username: user.username,
+    displayName: user.displayName,
+  }
+})

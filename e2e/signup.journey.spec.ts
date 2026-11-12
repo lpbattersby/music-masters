@@ -35,6 +35,6 @@ test.describe("sign up journey", () => {
     await page.getByRole("button", { name: "Confirm" }).click();
 
     await expect(page).toHaveURL('/dashboard')
-    await expect(page.getByRole('main')).toContainText('hi Ada Lovelace!')
+    await expect(page.getByRole('main')).toContainText('Your Groups')
   });
 });
