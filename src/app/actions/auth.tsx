@@ -1,7 +1,7 @@
 'use server';
 
-import { SignupFormSchema, FormState } from '@/app/lib/definitions'
-import { createUser } from '@/app/lib/users'
+import { SignupFormSchema, LoginFormSchema, FormState } from '@/app/lib/definitions'
+import { createUser, getUserByUsername } from '@/app/lib/users'
 import bcrypt from 'bcrypt'
 import { DrizzleQueryError } from 'drizzle-orm/errors'
 import { LibsqlError } from '@libsql/client'
@@ -62,6 +62,46 @@ export async function signup(state: FormState, formData: FormData) {
 
     throw error
   }
+
+  revalidatePath("/dashboard");
+  redirect("/dashboard");
+}
+
+export async function login(state: FormState, formData: FormData) {
+  const validatedFields = LoginFormSchema.safeParse({
+    username: formData.get('username'),
+    password: formData.get('password'),
+  })
+
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+    }
+  }
+
+  const { username, password } = validatedFields.data
+
+
+
+  const session = await getSession();
+
+  const user = await getUserByUsername(username);
+  if (!user) {
+    return {
+      errors: { username: ['User not found.'] },
+    }
+  }
+
+  const passwordMatch = await bcrypt.compare(password, user.passwordHash);
+  if (!passwordMatch) {
+    return {
+      errors: { password: ['Incorrect password.'] },
+    }
+  }
+
+  session.username = username as string;
+  session.isLoggedIn = true;
+  await session.save();
 
   revalidatePath("/dashboard");
   redirect("/dashboard");

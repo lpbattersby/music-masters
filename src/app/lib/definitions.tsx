@@ -31,3 +31,8 @@ export type FormState =
       message?: string
     }
   | undefined
+
+export const LoginFormSchema = z.object({
+  username: z.string().min(2, { error: 'Username must be at least 2 characters long.' }).trim(),
+  password: z.string().min(8, { error: 'Be at least 8 characters long' }).trim(),
+})

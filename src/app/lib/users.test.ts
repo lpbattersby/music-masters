@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 
-import { createUser, getUserById, listUsers } from "@/app/lib/users";
+import { createUser, getUserById, listUsers, getUserByUsername } from "@/app/lib/users";
 import { resetDb } from "@/test/helpers";
 
 describe("users queries", () => {
@@ -30,6 +30,9 @@ describe("users queries", () => {
 
     const all = await listUsers();
     expect(all).toHaveLength(2);
+
+    const foundByUsername = await getUserByUsername("a_username");
+    expect(foundByUsername).toMatchObject({ username: "a_username", displayName: "A" });
   });
 
   it("enforces unique usernames", async () => {

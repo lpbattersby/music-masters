@@ -18,6 +18,11 @@ export async function getUserById(id: number): Promise<User | undefined> {
   return db.query.users.findFirst({ where: eq(users.userId, id) });
 }
 
+export async function getUserByUsername(username: string): Promise<User | undefined> {
+  const db = await getDb();
+  return db.query.users.findFirst({ where: eq(users.username, username) });
+}
+
 export async function listUsers(): Promise<User[]> {
   const db = await getDb();
   return db.select().from(users).orderBy(desc(users.createdAt));
