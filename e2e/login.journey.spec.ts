@@ -1,4 +1,5 @@
 import { expect, test, createTestUsers, testUser } from "@/test/fixtures";
+import { AxeBuilder } from "@axe-core/playwright";
 
 test.describe("login journey", () => {
   test("a visitor can login and land on the dashboard", async ({
@@ -8,6 +9,10 @@ test.describe("login journey", () => {
     await page.goto("/");
     await page.getByRole("link", { name: "Login" }).click();
     await expect(page).toHaveURL("/login");
+
+    // Run accessibility check on the login page
+    const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
+    expect(accessibilityScanResults.violations).toHaveLength(0);
 
     // Username not recognized
     await page.getByLabel("Username").fill(`wrongusername`);

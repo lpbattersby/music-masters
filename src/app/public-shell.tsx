@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import Link from "next/link";
+import Paper from "@mui/material/Paper";
 
 export default function PublicShell({ children }: { children: ReactNode }) {
   return (
@@ -11,7 +12,9 @@ export default function PublicShell({ children }: { children: ReactNode }) {
         <span className="public-art-stripes absolute bottom-2.5 h-16.5 w-full min-[701px]:bottom-7 min-[701px]:h-27.5" />
         <span className="vinyl-record -top-4 right-6 size-42.5 min-[701px]:top-11 min-[701px]:-right-10 min-[701px]:size-80"><span /></span>
       </div>
-      <section className="gradient-border min-w-0 rounded-3xl px-6 py-7 min-[701px]:p-9">{children}</section>
+      <Paper elevation={0} className="gradient-border" sx={{ p: { xs: 3, md: 4 } }}>
+        {children}
+      </Paper>
     </main>
   );
 }

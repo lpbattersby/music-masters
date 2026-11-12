@@ -1,4 +1,5 @@
 import { expect, test } from "@/test/fixtures";
+import { AxeBuilder } from "@axe-core/playwright";
 
 test.describe("sign up journey", () => {
   test("a visitor can sign up and land on the dashboard", async ({
@@ -7,6 +8,10 @@ test.describe("sign up journey", () => {
     await page.goto("/");
     await page.getByRole("link", { name: "Sign Up" }).click();
     await expect(page).toHaveURL("/signup");
+
+    // Run accessibility check on the sign up page
+    const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
+    expect(accessibilityScanResults.violations).toHaveLength(0);
 
     // Invalid fields
     await page.getByLabel("Display name").fill("A");

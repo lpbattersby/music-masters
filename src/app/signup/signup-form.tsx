@@ -4,7 +4,9 @@ import { signup } from '@/app/actions/auth'
 import { useActionState, useState } from 'react'
 import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
-import Fab from '@mui/material/Fab';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
+import Typography from '@mui/material/Typography';
 
 export default function SignupForm() {
   const [state, action, pending] = useActionState(signup, undefined)
@@ -15,8 +17,8 @@ export default function SignupForm() {
   })
 
   return (
-    <form aria-label="Sign up" action={action} className="flex flex-col gap-6">
-      <h1 className="public-title">Sign Up</h1>
+    <Stack component="form" aria-label="Sign up" action={action} spacing={3}>
+      <Typography variant="h1">Sign Up</Typography>
       <TextField 
         variant="outlined" 
         id="username" 
@@ -70,19 +72,18 @@ export default function SignupForm() {
         onChange={(e) => setFormState({ ...formState, password: e.target.value })}
       />
 
-      <div className="text-sm leading-relaxed">
+      <Typography variant="body2">
         Already have an account? <Link href="/login">Log in</Link>
-      </div>
+      </Typography>
 
-      <Fab 
+      <Button
         disabled={pending}
-        variant="extended"
         type="submit"
         className="gradient-border"
         sx={{ borderRadius: '50px', px: 5, py: 1.5, color: 'text.primary', width: '100%' }}
       >
         Confirm
-      </Fab>
-    </form>
+      </Button>
+    </Stack>
   )
 }

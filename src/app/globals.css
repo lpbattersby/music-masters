@@ -19,8 +19,6 @@ body { background: var(--color-beige); color: var(--color-brown); }
 
 @layer components {
   .app-content { @apply mx-auto w-[calc(100%-48px)] max-w-240 pt-8 pb-16 min-[481px]:pt-11; }
-  .display-heading { @apply font-display text-[clamp(36px,6vw,56px)] leading-[1.1] font-bold tracking-[-1.5px] wrap-anywhere; }
-  .public-title { @apply font-display text-[clamp(32px,4vw,44px)] leading-[1.15] font-bold tracking-tight; }
 }
 
 .vinyl-record {
@@ -44,6 +42,8 @@ body { background: var(--color-beige); color: var(--color-brown); }
   transform: rotate(-25deg) scale(1.5);
 }
 .gradient-border,
+.MuiPaper-root.gradient-border,
+.MuiButton-root.gradient-border,
 .MuiFab-root.gradient-border {
   border: 3px solid transparent;
   background:

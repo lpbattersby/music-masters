@@ -23,6 +23,18 @@ const theme = createTheme({
   typography: {
     fontFamily: 'var(--font-geist-sans), sans-serif',
     button: { textTransform: 'none', fontWeight: 700 },
+    h1: {
+      fontFamily: 'Georgia, serif', fontSize: 'clamp(36px, 6vw, 56px)',
+      fontWeight: 700, lineHeight: 1.1, letterSpacing: '-1.5px', overflowWrap: 'anywhere',
+    },
+    h2: {
+      fontFamily: 'Georgia, serif', fontSize: 'clamp(28px, 4vw, 32px)',
+      fontWeight: 700, lineHeight: 1.2, letterSpacing: '-0.5px', overflowWrap: 'anywhere',
+    },
+    h3: {
+      fontFamily: 'Georgia, serif', fontSize: 'clamp(22px, 3vw, 24px)',
+      fontWeight: 700, lineHeight: 1.3, letterSpacing: 'normal', overflowWrap: 'anywhere',
+    },
   },
   shape: { borderRadius: 16 },
   components: {

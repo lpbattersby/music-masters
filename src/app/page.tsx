@@ -1,24 +1,31 @@
 import PublicShell from "./public-shell";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 
 export default function Home() {
   return (
     <PublicShell>
-      <h1 className="public-title">Share music.<br />Vote together.</h1>
-      <p className="mt-5 mb-7 text-[15px] leading-relaxed text-muted">Create a group, submit tracks and vote for your favourites.</p>
-      <div className="flex flex-col gap-3.5">
-      <a
+      <Typography variant="h1">Welcome to <br /> Music Masters</Typography>
+      <Typography sx={{ mt: 2.5, mb: 3.5 }}>Create a group, submit tracks in themed rounds and vote for your favourites!</Typography>
+      <Stack spacing={2}>
+      <Button
         href="/login"
-        className="rounded-full border-3 border-brown bg-brown px-6 py-3 text-center text-[15px] font-bold text-paper hover:border-rust hover:bg-rust"
+        variant="contained"
+        size="large"
+        sx={{ borderRadius: 50, bgcolor: 'text.primary' }}
       >
         Login
-      </a>
-      <a
+      </Button>
+      <Button
         href="/signup"
-        className="gradient-border rounded-full px-6 py-3 text-center text-[15px] font-bold hover:text-brand"
+        size="large"
+        className="gradient-border"
+        sx={{ borderRadius: 50, color: 'text.primary' }}
       >
         Sign Up
-      </a>
-      </div>
+      </Button>
+      </Stack>
     </PublicShell>
   );
 }

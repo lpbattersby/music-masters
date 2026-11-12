@@ -3,6 +3,11 @@ import { getMembersByGroupId } from "@/app/lib/users";
 import GroupInfo from "./group-info";
 import Link from "next/link";
 import Button from "@mui/material/Button";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemText from "@mui/material/ListItemText";
 import { ArrowBack } from "@mui/icons-material";
 
 export default async function GroupPage({
@@ -16,28 +21,26 @@ export default async function GroupPage({
   const members = await getMembersByGroupId(Number(id));
 
   return (
-    <main className="app-content">
-      <Link href="/dashboard" className="mb-8 inline-block text-blue hover:underline">
-        <ArrowBack />
+    <main className="app-content flex flex-col gap-6">
+      <Link href="/dashboard" className="inline-block text-blue hover:underline">
+        <ArrowBack /> Home
       </Link>
       <GroupInfo group={group} isMember={isMember} />
-      <section className="rounded-[18px] border border-outline border-t-5 border-t-blue bg-paper p-5.5 min-[481px]:p-7" aria-labelledby="current-round-title">
-        <h2 id="current-round-title" className="font-display text-[25px] leading-snug">Current round</h2>
-        <p className="mt-4 mb-6 text-muted">No round yet.</p>
+      <Paper component="section" aria-labelledby="current-round-title" sx={{ p: 2 }}>
+        <Typography variant="h3" id="current-round-title">Current round</Typography>
+        <Typography color="text.secondary" sx={{ mt: 2, mb: 3 }}>No round yet.</Typography>
         {user.userId === group.createdBy && (
           <Button variant="contained" disabled>Create round</Button>
         )}
-      </section>
-      <section className="mt-6 flex flex-col items-start justify-between gap-6 rounded-[18px] border border-outline p-5.5 min-[481px]:flex-row min-[481px]:items-center min-[481px]:p-7">
-        <div>
-          <h2 className="font-display text-[25px] leading-snug">Members</h2>
-          <ul className="mt-4">
+      </Paper>
+      <Paper component="section" aria-labelledby="members-title" variant="outlined" sx={{ bgcolor: 'transparent', p: 2 }}>
+          <Typography variant="h3" id="members-title">Members</Typography>
+          <List dense sx={{ mt: 2 }}>
             {members.map((member) => (
-              <li key={member.userId}>{member.displayName}</li>
+              <ListItem key={member.userId} disableGutters><ListItemText primary={member.displayName} /></ListItem>
             ))}
-          </ul>
-        </div>
-      </section>
+          </List>
+      </Paper>
     </main>
   );
 }

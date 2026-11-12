@@ -1,3 +1,4 @@
+import AxeBuilder from '@axe-core/playwright';
 import { createMembership } from "@/app/lib/memberships";
 import { expect, test, createTestUsers, createTestGroups, testUser } from "@/test/fixtures";
 
@@ -16,7 +17,23 @@ test.describe("create group journey", () => {
     await expect(page.getByRole("banner").getByRole("button", { name: "Profile", exact: true })).toBeVisible();
     await expect(page.getByRole("button", { name: "Activity", exact: true })).toBeDisabled();
 
+    // Run accessibility check on the dashboard page
+    const accessibilityScanResultsDashboard = await new AxeBuilder({ page }).analyze();
+    expect(accessibilityScanResultsDashboard.violations).toHaveLength(0);
+
     await page.getByRole("button", { name: "Create Group" }).click();
+
+    const dialog = page.getByRole("dialog", { name: "Create Group" });
+
+    await expect(dialog).toBeVisible();
+    const container = page.locator(".MuiDialog-container").filter({
+      has: dialog,
+    });
+    await expect(container).toHaveCSS("opacity", "1");
+
+    // Run accessibility check on the create group page
+    const accessibilityScanResults = await new AxeBuilder({ page }).analyze();
+    expect(accessibilityScanResults.violations).toHaveLength(0);
 
     // Fill in the group creation form
     // Invalid description
@@ -51,6 +68,11 @@ test.describe("create group journey", () => {
     await expect(page.getByRole("heading", { name: "Current round" })).toBeVisible();
     await expect(page.getByText("No round yet.", { exact: true })).toBeVisible();
     await expect(page.getByRole("button", { name: "Create round", exact: true })).toBeDisabled();
+
+    // Run accessibility check on the group page
+    const accessibilityScanResultsGroup = await new AxeBuilder({ page }).analyze();
+    expect(accessibilityScanResultsGroup.violations).toHaveLength(0);
+
     await page.goto('/dashboard')
     await expect(page.getByRole('link', {
       name: 'Valid Group Name',
@@ -116,7 +138,14 @@ test.describe("join group journey", () => {
 
     // Simulate joining the group using the copied link
     await page.goto(`/groups/${group.groupId}`);
+    await expect(page.getByRole("heading", { name: group.name, exact: true })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Join", exact: true })).toBeVisible();
     await expect(page.getByRole("button", { name: "Create round", exact: true })).toHaveCount(0);
+
+    // Run accessibility check on the group page before joining
+    const accessibilityScanResultsGroupBeforeJoin = await new AxeBuilder({ page }).analyze();
+    expect(accessibilityScanResultsGroupBeforeJoin.violations).toHaveLength(0);
+
     await page.getByRole("button", { name: "Join" }).click();
     await expect(page.getByRole("button", {
       name: "Copy invite link",

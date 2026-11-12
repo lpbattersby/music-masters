@@ -6,6 +6,7 @@ import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import Button from '@mui/material/Button'
+import Typography from '@mui/material/Typography'
 import DialogActions from '@mui/material/DialogActions'
 import { Add, LibraryMusicOutlined, History } from '@mui/icons-material'
 import Link from 'next/link'
@@ -67,7 +68,9 @@ export default function MMFab({ id, label, text, children, navigation = false }:
         fullWidth
         maxWidth="sm"
       >
-        <DialogTitle id={titleId}>{label}</DialogTitle>
+        <DialogTitle id={titleId}>
+          <Typography variant="h1">{label}</Typography>
+        </DialogTitle>
         <DialogContent>{children}</DialogContent>
         <DialogActions>
           <Button onClick={() => setOpen(false)}>Close</Button>

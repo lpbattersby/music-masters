@@ -4,7 +4,8 @@ import { createGroupAction } from '@/app/actions/groups'
 import { useActionState, useState } from 'react'
 import TextInput from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
-import Fab from '@mui/material/Fab';
+import Button from '@mui/material/Button';
+import Stack from '@mui/material/Stack';
 
 export default function CreateGroupForm() {
   const [state, action, pending] = useActionState(createGroupAction, undefined)
@@ -16,7 +17,7 @@ export default function CreateGroupForm() {
   })
 
   return (
-    <form aria-label="Create Group" action={action} className="flex flex-col items-center gap-6">
+    <Stack component="form" aria-label="Create Group" action={action} spacing={3} sx={{ alignItems: 'center' }}>
       <TextInput 
         variant="outlined" 
         id="name" 
@@ -77,15 +78,14 @@ export default function CreateGroupForm() {
         }}
       />
 
-      <Fab 
+      <Button
         disabled={pending}
-        variant="extended"
         type="submit"
         className="gradient-border"
         sx={{ borderRadius: '50px', px: 5, py: 1.5, color: 'text.primary' }}
       >
         Confirm
-      </Fab>
-    </form>
+      </Button>
+    </Stack>
   )
 }
