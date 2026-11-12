@@ -2,13 +2,15 @@
 
 @keyframes shift { 0%,100% { background-position: 0% 0%; } 50% { background-position: 0% 100%; } }
 
-.gradient-border {
+.gradient-border,
+.MuiFab-root.gradient-border {
   border: 3px solid transparent;
   background:
     linear-gradient(#fff, #fff) padding-box,
     linear-gradient(150deg, #e74346 0 25%, #ffbb5b 0 50%, #e74346 0 75%, #ffbb5b 0 100%) border-box;
   background-size: auto, 100% 300%;   /* white layer normal; gradient 3x tall so it can pan */
   animation: shift 12s ease-in-out infinite;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
 
 .bg-stripe {

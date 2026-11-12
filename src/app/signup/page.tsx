@@ -3,7 +3,7 @@ import SignupForm from '@/app/signup/signup-form';
 
 export default function Home() {
   return (
-    <main className="gradient-border flex min-w-half flex-col items-center justify-center gap-4 bg-white p-2 pb-10 m-5 rounded-4xl max-w-md shadow-xl">
+    <main className="flex min-w-half flex-col items-center justify-center gap-4 bg-white p-2 pb-10 m-5 rounded-4xl max-w-md">
       <Image
         src="/logo.png"
         alt="Logo"

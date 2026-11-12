@@ -1,46 +1,80 @@
 'use client'
 
 import { signup } from '@/app/actions/auth'
-import { useActionState } from 'react'
+import { useActionState, useState } from 'react'
+import TextField from '@mui/material/TextField';
+import Link from '@mui/material/Link';
+import Fab from '@mui/material/Fab';
 
 export default function SignupForm() {
   const [state, action, pending] = useActionState(signup, undefined)
+  const [formState, setFormState] = useState({
+    username: '',
+    displayName: '',
+    password: ''
+  })
 
   return (
-    <form action={action}>
-      <div>
-        <label htmlFor="username">Username</label>
-        <input id="username" name="username" placeholder="Username" />
-      </div>
-      {state?.errors?.username && <p>{state.errors.username}</p>}
+    <form action={action} className="flex flex-col justify-center items-center gap-6">
+      <b className="text-2xl">Sign Up</b>
+      <br />
+      <TextField 
+        variant="outlined" 
+        id="username" 
+        name="username" 
+        label="Username" 
+        error={!!state?.errors?.username} 
+        helperText={state?.errors?.username}
+        value={formState.username}
+        onChange={(e) => setFormState({ ...formState, username: e.target.value })}
+      />
+
+      <TextField 
+        variant="outlined" 
+        id="displayName" 
+        name="displayName" 
+        label="Display Name" 
+        error={!!state?.errors?.displayName} 
+        helperText={state?.errors?.displayName}
+        value={formState.displayName}
+        onChange={(e) => setFormState({ ...formState, displayName: e.target.value })}
+      />
+
+      <TextField 
+        variant="outlined" 
+        id="password" 
+        name="password" 
+        label="Password" 
+        type="password" 
+        error={!!state?.errors?.password}
+        helperText={
+          state?.errors?.password && 
+          <>
+            Password must:
+            <ul>
+              {state.errors.password.map((error) => (
+                <li key={error}>- {error}</li>
+              ))}
+            </ul>
+          </>
+        }
+        value={formState.password}
+        onChange={(e) => setFormState({ ...formState, password: e.target.value })}
+      />
 
       <div>
-        <label htmlFor="displayName">Display Name</label>
-        <input id="displayName" name="displayName" placeholder="Display Name" />
+        Already have an account? <Link href="/login">Log in</Link>
       </div>
-      {state?.errors?.displayName && <p>{state.errors.displayName}</p>}
 
-      <div>
-        <label htmlFor="password">Password</label>
-        <input id="password" name="password" type="password" />
-      </div>
-      {state?.errors?.password && (
-        <div>
-          <p>Password must:</p>
-          <ul>
-            {state.errors.password.map((error) => (
-              <li key={error}>- {error}</li>
-            ))}
-          </ul>
-        </div>
-      )}
-      <button 
-        disabled={pending} 
+      <Fab 
+        disabled={pending}
+        variant="extended"
         type="submit"
-        className="gradient-border rounded-full px-8 py-3 font-medium shadow-xl"
+        className="gradient-border"
+        sx={{ borderRadius: '50px', px: 5, py: 1.5, color: 'black' }}
       >
-        Sign Up
-      </button>
+        Confirm
+      </Fab>
     </form>
   )
 }
