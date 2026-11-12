@@ -1,4 +1,4 @@
-import { and, eq } from "drizzle-orm";
+import { eq } from "drizzle-orm";
 import { getDb } from "@/app/lib/db";
 import { memberships, type Membership } from "@/app/lib/schema";
 
@@ -7,7 +7,7 @@ export async function createMembership(input: {
   userId: number;
 }): Promise<Membership> {
   const db = await getDb();
-  const [membership] = await db.insert(memberships).values(input).returning().onConflictDoNothing();
+  const [membership] = await db.insert(memberships).values(input).returning();
   return membership;
 }
 

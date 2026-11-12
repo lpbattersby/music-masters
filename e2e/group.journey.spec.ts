@@ -11,6 +11,7 @@ test.describe("create group journey", () => {
     await page.getByLabel("Username").fill(`${user.username}`);
     await page.getByLabel("Password").fill(`${testUser.password}`);
     await page.getByRole("button", { name: "Confirm" }).click();
+    await expect(page).toHaveURL(/\/dashboard$/);
 
     await page.getByRole("button", { name: "Create Group" }).click();
 

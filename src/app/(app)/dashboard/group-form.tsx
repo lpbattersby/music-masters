@@ -5,7 +5,6 @@ import { useActionState, useState } from 'react'
 import TextInput from '@mui/material/TextField';
 import InputAdornment from '@mui/material/InputAdornment';
 import Fab from '@mui/material/Fab';
-import FormControl from '@mui/material/FormControl';
 
 export default function CreateGroupForm() {
   const [state, action, pending] = useActionState(createGroupAction, undefined)

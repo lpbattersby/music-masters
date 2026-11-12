@@ -2,8 +2,6 @@
 
 import { Group } from '@/app/lib/schema'
 import Button from '@mui/material/Button'
-import Card from '@mui/material/Card'
-import Link from 'next/link'
 
 export default function GroupList({ groups }: { groups: Group[] }) {
   if (groups.length === 0) {
