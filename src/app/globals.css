@@ -13,5 +13,5 @@
 
 .bg-stripe {
     background:
-      linear-gradient(150deg, #e74346 0 25%, #ffbb5b 0 50%, #e74346 0 75%, #ffbb5b 0 100%) border-box;
+      linear-gradient(150deg, #e74346 0 25%, #ffbb5b 0 50%, #e74346 0 75%, #ffbb5b 0 100%);
 }

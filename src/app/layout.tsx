@@ -14,7 +14,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={geistSans.variable + " bg-stripe flex items-center justify-center"}>
+    <html lang="en" className={geistSans.variable + " flex items-center justify-center"}>
       <body>{children}</body>
     </html>
   );
