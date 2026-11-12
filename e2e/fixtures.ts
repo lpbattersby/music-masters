@@ -35,16 +35,9 @@ export const test = base.extend<{ resetDatabase: void }>({
   ],
 })
 
-export const createTestUser = async () => {
-  const client = createClient({ url: 'file:./data/e2e.db' })
-  const db = drizzle(client)
-  const hashedPassword = await bcrypt.hash(testUser.password, 10)
-  await db.insert(users).values({
-    username: testUser.username,
-    displayName: testUser.displayName,
-    passwordHash: hashedPassword,
-  })
-  client.close()
-}
+import { createUser } from '../src/app/lib/users'
+
+export const createTestUser = () => createUser(testUser)
+
 
 export { expect }

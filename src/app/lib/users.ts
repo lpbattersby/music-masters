@@ -1,15 +1,21 @@
 import { desc, eq } from "drizzle-orm";
-
+import bcrypt from 'bcrypt'
 import { getDb } from "@/app/lib/db";
 import { users, type User } from "@/app/lib/schema";
 
 export async function createUser(input: {
   username: string;
   displayName: string;
-  passwordHash: string;
+  password: string;
 }): Promise<User> {
   const db = await getDb();
-  const [user] = await db.insert(users).values(input).returning();
+  const hashedPassword = await bcrypt.hash(input.password, 10);
+  const [user] = await db.insert(users).values(
+    {
+      username: input.username,
+      displayName: input.displayName, 
+      passwordHash: hashedPassword
+    }).returning();
   return user;
 }
 

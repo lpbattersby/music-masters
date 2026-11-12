@@ -1,5 +1,8 @@
 import { defineConfig, devices } from "@playwright/test";
 
+const databaseUrl = 'file:./data/e2e.db'
+process.env.DATABASE_URL = databaseUrl
+
 export default defineConfig({
   testDir: "./e2e",
   fullyParallel: false,

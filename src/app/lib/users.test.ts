@@ -10,7 +10,7 @@ describe("users queries", () => {
     const created = await createUser({
       username: "ada_username",
       displayName: "Ada",
-      passwordHash: "hashed_password"
+      password: "password"
     });
 
     expect(created.userId).toBeGreaterThan(0);
@@ -25,8 +25,8 @@ describe("users queries", () => {
   });
 
   it("lists all users", async () => {
-    await createUser({ username: "a_username", displayName: "A", passwordHash: "hashed_password" });
-    await createUser({ username: "b_username", displayName: "B", passwordHash: "hashed_password" });
+    await createUser({ username: "a_username", displayName: "A", password: "password" });
+    await createUser({ username: "b_username", displayName: "B", password: "password" });
 
     const all = await listUsers();
     expect(all).toHaveLength(2);
@@ -36,9 +36,9 @@ describe("users queries", () => {
   });
 
   it("enforces unique usernames", async () => {
-    await createUser({ username: "dup_username", displayName: "One", passwordHash: "hashed_password" });
+    await createUser({ username: "dup_username", displayName: "One", password: "password" });
     await expect(
-      createUser({ username: "dup_username", displayName: "Two", passwordHash: "hashed_password" }),
+      createUser({ username: "dup_username", displayName: "Two", password: "password" }),
     ).rejects.toThrow();
   });
 });

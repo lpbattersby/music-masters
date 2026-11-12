@@ -36,13 +36,12 @@ export async function signup(state: FormState, formData: FormData) {
   }
 
   const { displayName, username, password } = validatedFields.data
-  const hashedPassword = await bcrypt.hash(password, 10)
 
   try {
     await createUser({
       displayName,
       username,
-      passwordHash: hashedPassword,
+      password: password,
     })
     const session = await getSession();
     session.username = username;
