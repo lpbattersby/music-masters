@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { getGroupsByUserId } from "@/app/lib/groups";
 import { getCurrentUser } from "@/app/lib/auth/dal";
 import GroupList from "./group-list";

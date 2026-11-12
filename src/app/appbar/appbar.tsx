@@ -1,6 +1,5 @@
 'use client'
 
-import Image from 'next/image'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
 
