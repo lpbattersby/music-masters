@@ -49,6 +49,10 @@ export type FormState =
         displayName?: string[]
         username?: string[]
         password?: string[]
+        name?: string[]
+        description?: string[]
+        submissionWindowDays?: string[]
+        votingWindowDays?: string[]
       }
       message?: string
     }
