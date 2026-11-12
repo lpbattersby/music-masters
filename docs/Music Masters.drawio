@@ -1,0 +1,43 @@
+<mxfile host="app.diagrams.net">
+  <diagram name="Page-1" id="q5QhpEMElJsOB7nPJKv2">
+    <mxGraphModel dx="2632" dy="1435" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="K2YG74BM95tPY9wzTOBT-21" parent="1" style="swimlane;whiteSpace=wrap;html=1;" value="Tailscale VPN" vertex="1">
+          <mxGeometry height="530" width="890" x="-80" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="K2YG74BM95tPY9wzTOBT-23" parent="K2YG74BM95tPY9wzTOBT-21" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#232F3D;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.client;labelPerimeter=1;" value="Client" vertex="1">
+          <mxGeometry height="76" width="78" x="40" y="169" as="geometry" />
+        </mxCell>
+        <mxCell id="K2YG74BM95tPY9wzTOBT-9" parent="1" style="dashed=0;outlineConnect=0;html=1;align=center;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;shape=mxgraph.weblogos.soundcloud;fillColor=#FE4600;strokeColor=none;labelPerimeter=1;" value="Soundcloud" vertex="1">
+          <mxGeometry height="32.6" width="73.4" x="930" y="356.07" as="geometry" />
+        </mxCell>
+        <mxCell id="K2YG74BM95tPY9wzTOBT-14" parent="1" style="swimlane;whiteSpace=wrap;html=1;" value="Host Machine" vertex="1">
+          <mxGeometry height="435" width="650" x="100" y="144.75" as="geometry" />
+        </mxCell>
+        <mxCell id="K2YG74BM95tPY9wzTOBT-3" parent="K2YG74BM95tPY9wzTOBT-14" style="image;aspect=fixed;html=1;align=center;fontSize=12;image=img/lib/azure2/general/File.svg;points=[[0.5,0.003,0],[0.5,0.998,0],[0,0.5,0],[1,0.5,0],[0.984,0.32,0],[0.993,0.985,0],[0.007,0.985,0],[0.007,0.015,0]];labelPerimeter=1;" value="&lt;div&gt;SQLite DB&lt;/div&gt;" vertex="1">
+          <mxGeometry height="69" width="56.00000000000001" x="285" y="295.25" as="geometry" />
+        </mxCell>
+        <mxCell id="K2YG74BM95tPY9wzTOBT-16" edge="1" parent="K2YG74BM95tPY9wzTOBT-14" source="K2YG74BM95tPY9wzTOBT-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;defaultLabelBackgroundColor=page;" target="K2YG74BM95tPY9wzTOBT-3" value="">
+          <mxGeometry relative="1" x="0.5953" as="geometry">
+            <mxPoint x="225" y="227.625" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="K2YG74BM95tPY9wzTOBT-26" parent="K2YG74BM95tPY9wzTOBT-14" style="sketch=0;outlineConnect=0;fontColor=#232F3E;gradientColor=none;fillColor=#232F3D;strokeColor=none;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;fontSize=12;fontStyle=0;aspect=fixed;pointerEvents=1;shape=mxgraph.aws4.servers;labelPerimeter=1;" value="&lt;div&gt;Next.js WebApp&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" vertex="1">
+          <mxGeometry height="69" width="69" x="279" y="114.25" as="geometry" />
+        </mxCell>
+        <mxCell id="K2YG74BM95tPY9wzTOBT-17" edge="1" parent="1" source="K2YG74BM95tPY9wzTOBT-26" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;defaultLabelBackgroundColor=page;" target="K2YG74BM95tPY9wzTOBT-9">
+          <mxGeometry relative="1" x="0.4509" as="geometry">
+            <mxPoint x="700" y="372.4000000000001" as="sourcePoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="K2YG74BM95tPY9wzTOBT-25" edge="1" parent="1" source="K2YG74BM95tPY9wzTOBT-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;defaultLabelBackgroundColor=page;" target="K2YG74BM95tPY9wzTOBT-26">
+          <mxGeometry relative="1" x="-0.403" as="geometry">
+            <mxPoint x="325" y="296.1875000000002" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
