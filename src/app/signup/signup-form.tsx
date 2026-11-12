@@ -34,7 +34,11 @@ export default function SignupForm() {
           </ul>
         </div>
       )}
-      <button disabled={pending} type="submit">
+      <button 
+        disabled={pending} 
+        type="submit"
+        className="gradient-border rounded-full px-8 py-3 font-medium shadow-xl"
+      >
         Sign Up
       </button>
     </form>
