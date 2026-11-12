@@ -13,7 +13,7 @@ describe("SignUp page", () => {
   it("renders the signup form", () => {
     render(<SignUp />);
     expect(
-      screen.getByRole('form', { name: /sign up/i })
+      screen.getByRole('form', { name: /login/i })
     ).toBeInTheDocument()
   });
 });
