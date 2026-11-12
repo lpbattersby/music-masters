@@ -1,7 +1,6 @@
 import { getCurrentUser, getCurrentUserGroup } from "@/app/lib/auth/dal";
+import { getMembersByGroupId } from "@/app/lib/users";
 import GroupInfo from "./group-info";
-import InviteButton from "./invite-button";
-import JoinButton from "./join-button";
 import Link from "next/link";
 import Button from "@mui/material/Button";
 import { ArrowBack } from "@mui/icons-material";
@@ -14,6 +13,7 @@ export default async function GroupPage({
   const { id } = await params;
   const { group, isMember } = await getCurrentUserGroup(Number(id));
   const user = await getCurrentUser();
+  const members = await getMembersByGroupId(Number(id));
 
   return (
     <main className="app-content">
@@ -27,6 +27,16 @@ export default async function GroupPage({
         {user.userId === group.createdBy && (
           <Button variant="contained" disabled>Create round</Button>
         )}
+      </section>
+      <section className="mt-6 flex flex-col items-start justify-between gap-6 rounded-[18px] border border-outline p-5.5 min-[481px]:flex-row min-[481px]:items-center min-[481px]:p-7">
+        <div>
+          <h2 className="font-display text-[25px] leading-snug">Members</h2>
+          <ul className="mt-4">
+            {members.map((member) => (
+              <li key={member.userId}>{member.displayName}</li>
+            ))}
+          </ul>
+        </div>
       </section>
     </main>
   );

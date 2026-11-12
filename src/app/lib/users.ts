@@ -1,7 +1,7 @@
-import { desc, eq } from "drizzle-orm";
+import { desc, eq, getTableColumns } from "drizzle-orm";
 import bcrypt from 'bcrypt'
 import { getDb } from "@/app/lib/db";
-import { users, type User } from "@/app/lib/schema";
+import { memberships, users, type User } from "@/app/lib/schema";
 
 export async function createUser(input: {
   username: string;
@@ -32,4 +32,14 @@ export async function getUserByUsername(username: string): Promise<User | undefi
 export async function listUsers(): Promise<User[]> {
   const db = await getDb();
   return db.select().from(users).orderBy(desc(users.createdAt));
+}
+
+export async function getMembersByGroupId(groupId: number): Promise<User[]> {
+  const db = await getDb();
+  const members = await db
+    .select(getTableColumns(users))
+    .from(users)
+    .innerJoin(memberships, eq(users.userId, memberships.userId))
+    .where(eq(memberships.groupId, groupId));
+  return members;
 }
