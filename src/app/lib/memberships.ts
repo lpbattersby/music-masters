@@ -7,7 +7,7 @@ export async function createMembership(input: {
   userId: number;
 }): Promise<Membership> {
   const db = await getDb();
-  const [membership] = await db.insert(memberships).values(input).returning();
+  const [membership] = await db.insert(memberships).values(input).returning().onConflictDoNothing();
   return membership;
 }
 

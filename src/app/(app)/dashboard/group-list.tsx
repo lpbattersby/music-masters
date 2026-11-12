@@ -11,7 +11,7 @@ export default function GroupList({ groups }: { groups: Group[] }) {
   }
 
   return (
-    <div aria-label="Groups" className="flex flex-col justify-center items-center gap-6 w-full">
+    <div aria-label="Groups" className="flex flex-col justify-center items-center gap-6 w-1/2 min-w-[300px]">
       {groups.map((group) => (
         <Button key={group?.groupId} href={`/groups/${group?.groupId}`} className="w-full h-20 mx-4 shadow-xl" variant="outlined">
           {group?.name}

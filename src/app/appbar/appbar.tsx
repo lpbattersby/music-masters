@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { Home, HomeRounded, Logout } from '@mui/icons-material'
+import { HomeRounded, Logout } from '@mui/icons-material'
 import Link from 'next/link'
 import AppBar from '@mui/material/AppBar'
 import Toolbar from '@mui/material/Toolbar'
@@ -18,7 +18,7 @@ export default function MMAppBar() {
       sx={{ bgcolor: 'primary', color: 'white' }}
     >
       <Toolbar sx={{ justifyContent: 'space-between', py: 1, mx: 1 }}>
-        <Link href="/dashboard">
+        <Link href="/dashboard" aria-label="Home">
           <HomeRounded />
         </Link>
         <Image
@@ -27,9 +27,10 @@ export default function MMAppBar() {
           width={300}
           height={300}
           style={{ width: 'auto', height: 54, maxWidth: '100%', objectFit: 'contain', backgroundColor: 'transparent' }}
+          loading='eager'
         />
         <form action={logout}>
-          <button type="submit">
+          <button type="submit" aria-label="Logout">
             <Logout />
           </button>
         </form>

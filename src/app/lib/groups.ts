@@ -56,3 +56,20 @@ export async function getGroupForUser(groupId: number, userId: number) {
 
   return group
 }
+
+export async function isUserMemberOfGroup(
+  groupId: number,
+  userId: number,
+): Promise<boolean> {
+  const db = await getDb();
+  const [membership] = await db
+    .select({ userId: memberships.userId })
+    .from(memberships)
+    .where(and(
+      eq(memberships.groupId, groupId),
+      eq(memberships.userId, userId),
+    ))
+    .limit(1);
+
+  return Boolean(membership);
+}

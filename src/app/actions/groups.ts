@@ -4,8 +4,9 @@ import { verifySession } from "@/app/lib/auth/dal"
 import { getUserByUsername } from "@/app/lib/users"
 import { createGroup } from "@/app/lib/groups"
 import { createMembership } from "@/app/lib/memberships"
-import { redirect } from "next/navigation"
 import { FormState, CreateGroupFormSchema } from "@/app/lib/definitions"
+import { notFound, redirect } from "next/navigation";
+import { getGroupById } from "@/app/lib/groups";
 
 export async function createGroupAction(
   previousState: FormState,
@@ -43,3 +44,29 @@ export async function createGroupAction(
     redirect(`/groups/${group.groupId}`)
 }
 
+export async function joinGroupAction(formData: FormData) {
+  const { username } = await verifySession();
+  const user = await getUserByUsername(username);
+
+  if (!user) {
+    redirect("/login");
+  }
+
+  const groupId = Number(formData.get("groupId"));
+
+  if (!Number.isSafeInteger(groupId) || groupId <= 0) {
+    notFound();
+  }
+
+  const group = await getGroupById(groupId);
+
+  if (!group) {
+    notFound();
+  }
+
+  await createMembership({
+    groupId,
+    userId: user.userId,
+  });
+  redirect(`/groups/${groupId}`);
+}

@@ -73,3 +73,49 @@ test.describe("view group journey", () => {
     await expect(page.getByRole('main')).toContainText(`${group.description}`)
   });
 });
+
+test.describe("join group journey", () => {
+  test("a user can join a group using the invite link", async ({ page }) => {
+    const [user1, user2] = await createTestUsers(2);
+    const [group] = await createTestGroups(1, user1.userId);
+      await createMembership({
+      userId: user1.userId,
+      groupId: group.groupId,
+    })
+
+    await page.goto("/login");
+    await page.getByLabel("Username").fill(`${user1.username}`);
+    await page.getByLabel("Password").fill(`${testUser.password}`);
+    await page.getByRole("button", { name: "Confirm" }).click();
+    await expect(page).toHaveURL(/\/dashboard$/);
+
+    await page.goto(`/groups/${group.groupId}`);
+    await page.getByRole("button", {
+      name: "Copy invite link",
+      exact: true,
+    }).click();
+
+    await page.getByRole("button", { name: "Logout" }).click();
+
+    // Log in as the second user to join the group
+    await page.goto("/login");
+    await page.getByLabel("Username").fill(`${user2.username}`);
+    await page.getByLabel("Password").fill(`${testUser.password}`);
+    await page.getByRole("button", { name: "Confirm" }).click();
+    await expect(page).toHaveURL(/\/dashboard$/);
+
+    // Simulate joining the group using the copied link
+    await page.goto(`/groups/${group.groupId}`);
+    await page.getByRole("button", { name: "Join" }).click();
+    await expect(page.getByRole("button", {
+      name: "Copy invite link",
+      exact: true,
+    })).toBeVisible();
+
+    await page.goto("/dashboard");
+    await expect(page.getByRole("link", {
+      name: group.name,
+      exact: true,
+    })).toBeVisible();
+  });
+});
