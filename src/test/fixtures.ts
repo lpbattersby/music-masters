@@ -1,14 +1,23 @@
 import { test as base, expect } from '@playwright/test'
 import { mkdir } from 'node:fs/promises'
+import { randomUUID } from 'node:crypto'
 import { createClient } from '@libsql/client'
 import { drizzle } from 'drizzle-orm/libsql'
 import { migrate } from 'drizzle-orm/libsql/migrator'
 import { createUser } from '@/app/lib/users'
+import { createGroup } from '@/app/lib/groups'
 
 export const testUser = {
   username: 'existing-user',
   displayName: 'Test User',
   password: 'TestPassword1!',
+}
+
+export const testGroup = {
+  name: 'test-group',
+  description: 'Test Group',
+  submissionWindowDays: 2,
+  votingWindowDays: 2,
 }
 
 export const test = base.extend<{ resetDatabase: void }>({
@@ -34,7 +43,25 @@ export const test = base.extend<{ resetDatabase: void }>({
   ],
 })
 
-export const createTestUser = () => createUser(testUser)
+export const createTestUsers = (count: number) =>
+  Promise.all(
+    Array.from({ length: count }, () =>
+      createUser({
+        ...testUser,
+        username: `${testUser.username}-${randomUUID()}`,
+      }),
+    ),
+  )
 
+export const createTestGroups = (count: number, createdBy: number) =>
+  Promise.all(
+    Array.from({ length: count }, () =>
+      createGroup({
+        ...testGroup,
+        name: `${testGroup.name}-${randomUUID()}`,
+        createdBy,
+      }),
+    ),
+  )
 
 export { expect }

@@ -1,13 +1,13 @@
-import { expect, test, createTestUser, testUser } from "@/test/fixtures";
+import { expect, test, createTestUsers, testUser } from "@/test/fixtures";
 
 test.describe("create group journey", () => {
   test.skip("a visitor can create a group and see the group on the dashboard", async ({
     page,
   }) => {
-    await createTestUser();
+    const [user] = await createTestUsers(1);
     await page.goto("/login");
 
-    await page.getByLabel("Username").fill(`${testUser.username}`);
+    await page.getByLabel("Username").fill(`${user.username}`);
     await page.getByLabel("Password").fill(`${testUser.password}`);
     await page.getByRole("button", { name: "Confirm" }).click();
 
@@ -50,9 +50,9 @@ test.describe("view group journey", () => {
   test.skip("a visitor can view group details on the group page", async ({
     page,
   }) => {
-    await createTestUser();
+    const [user] = await createTestUsers(1);
     await page.goto("/login");
-    await page.getByLabel("Username").fill(`${testUser.username}`);
+    await page.getByLabel("Username").fill(`${user.username}`);
     await page.getByLabel("Password").fill(`${testUser.password}`);
     await page.getByRole("button", { name: "Confirm" }).click();
 

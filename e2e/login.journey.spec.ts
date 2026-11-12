@@ -1,10 +1,10 @@
-import { expect, test, createTestUser, testUser } from "@/test/fixtures";
+import { expect, test, createTestUsers, testUser } from "@/test/fixtures";
 
 test.describe("login journey", () => {
   test("a visitor can login and land on the dashboard", async ({
     page,
   }) => {
-    await createTestUser();
+    const [user] = await createTestUsers(1);
     await page.goto("/");
     await page.getByRole("link", { name: "Login" }).click();
     await expect(page).toHaveURL("/login");
@@ -16,14 +16,14 @@ test.describe("login journey", () => {
     await expect(page.getByText("User not found.")).toBeVisible();
 
     // Wrong password
-    await page.getByLabel("Username").fill(`${testUser.username}`);
+    await page.getByLabel("Username").fill(`${user.username}`);
     await page.getByLabel("Password").fill(`incorrectpassword123!`);
     await page.getByRole("button", { name: "Confirm" }).click();
 
     await expect(page.getByText("Incorrect password")).toBeVisible();
 
     // Successful login
-    await page.getByLabel("Username").fill(`${testUser.username}`);
+    await page.getByLabel("Username").fill(`${user.username}`);
     await page.getByLabel("Password").fill(`${testUser.password}`);
     await page.getByRole("button", { name: "Confirm" }).click();
 

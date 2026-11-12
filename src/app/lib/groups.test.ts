@@ -2,13 +2,13 @@ import { beforeEach, describe, expect, it } from "vitest";
 
 import { createGroup, getGroupById, listGroups, getGroupByName } from "@/app/lib/groups";
 import { resetDb } from "@/test/helpers";
-import { createTestUser } from "@/test/fixtures";
+import { createTestUsers } from "@/test/fixtures";
 
 describe("groups queries", () => {
   beforeEach(resetDb);
 
   it("creates and reads back a group", async () => {
-    const created_user = await createTestUser();
+    const [created_user] = await createTestUsers(1);
     const created = await createGroup({
         name: "new_group",
         description: "test description",
@@ -29,7 +29,7 @@ describe("groups queries", () => {
   });
 
   it("lists all groups", async () => {
-    const created_user = await createTestUser();
+    const [created_user] = await createTestUsers(1);
     await createGroup({ name: "group_a", description: "A", submissionWindowDays: 2, votingWindowDays: 2, createdBy: created_user.userId });
     await createGroup({ name: "group_b", description: "B", submissionWindowDays: 2, votingWindowDays: 2, createdBy: created_user.userId });
 
@@ -45,7 +45,7 @@ describe("groups queries", () => {
   });
 
   it("enforces unique group names", async () => {
-    const created_user = await createTestUser();
+    const [created_user] = await createTestUsers(1);
     await createGroup({ name: "dup_group", description: "One", submissionWindowDays: 2, votingWindowDays: 2, createdBy: created_user.userId });
     await expect(
       createGroup({ name: "dup_group", description: "Two", submissionWindowDays: 2, votingWindowDays: 2, createdBy: created_user.userId }),
@@ -53,7 +53,7 @@ describe("groups queries", () => {
   });
 
   it("enforces greater than 0 for windows", async () => {
-    const created_user = await createTestUser();
+    const [created_user] = await createTestUsers(1);
     await expect(
       createGroup({ name: "invalid_group", description: "Invalid", submissionWindowDays: 0, votingWindowDays: 2, createdBy: created_user.userId }),
     ).rejects.toThrow();
