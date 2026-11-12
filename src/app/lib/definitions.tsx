@@ -3,6 +3,7 @@ import * as z from 'zod'
 export const SignupFormSchema = z.object({
   displayName: z
     .string()
+    .trim()
     .min(2, { error: 'Name must be at least 2 characters long.' })
     .trim(),
   username: z

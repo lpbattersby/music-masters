@@ -6,7 +6,7 @@ import { users, type User } from "@/app/lib/schema";
 export async function createUser(input: {
   username: string;
   displayName: string;
-  password_hash: string;
+  passwordHash: string;
 }): Promise<User> {
   const db = await getDb();
   const [user] = await db.insert(users).values(input).returning();
@@ -15,7 +15,7 @@ export async function createUser(input: {
 
 export async function getUserById(id: number): Promise<User | undefined> {
   const db = await getDb();
-  return db.query.users.findFirst({ where: eq(users.user_id, id) });
+  return db.query.users.findFirst({ where: eq(users.userId, id) });
 }
 
 export async function listUsers(): Promise<User[]> {

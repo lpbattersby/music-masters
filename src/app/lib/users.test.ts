@@ -10,13 +10,13 @@ describe("users queries", () => {
     const created = await createUser({
       username: "ada_username",
       displayName: "Ada",
-      password_hash: "hashed_password"
+      passwordHash: "hashed_password"
     });
 
-    expect(created.user_id).toBeGreaterThan(0);
+    expect(created.userId).toBeGreaterThan(0);
     expect(created.createdAt).toBeTruthy();
 
-    const found = await getUserById(created.user_id);
+    const found = await getUserById(created.userId);
     expect(found).toMatchObject({ username: "ada_username", displayName: "Ada" });
   });
 
@@ -25,17 +25,17 @@ describe("users queries", () => {
   });
 
   it("lists all users", async () => {
-    await createUser({ username: "a_username", displayName: "A", password_hash: "hashed_password" });
-    await createUser({ username: "b_username", displayName: "B", password_hash: "hashed_password" });
+    await createUser({ username: "a_username", displayName: "A", passwordHash: "hashed_password" });
+    await createUser({ username: "b_username", displayName: "B", passwordHash: "hashed_password" });
 
     const all = await listUsers();
     expect(all).toHaveLength(2);
   });
 
   it("enforces unique usernames", async () => {
-    await createUser({ username: "dup_username", displayName: "One", password_hash: "hashed_password" });
+    await createUser({ username: "dup_username", displayName: "One", passwordHash: "hashed_password" });
     await expect(
-      createUser({ username: "dup_username", displayName: "Two", password_hash: "hashed_password" }),
+      createUser({ username: "dup_username", displayName: "Two", passwordHash: "hashed_password" }),
     ).rejects.toThrow();
   });
 });
