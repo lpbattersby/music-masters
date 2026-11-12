@@ -1,26 +1,19 @@
 "use client";
 
-import Fab from "@mui/material/Fab";
+import Button from "@mui/material/Button";
+import { useFormStatus } from "react-dom";
 import { joinGroupAction } from "@/app/actions/groups";
+
+function JoinSubmit() {
+  const { pending } = useFormStatus();
+  return <Button type="submit" variant="contained" disabled={pending}>{pending ? "Joining..." : "Join"}</Button>;
+}
 
 export default function JoinButton({ groupId }: { groupId: number }) {
   return (
     <form action={joinGroupAction}>
       <input type="hidden" name="groupId" value={groupId} />
-      <Fab
-        color="primary"
-        type="submit"
-        variant="extended"
-        sx={{
-          position: "fixed",
-          left: "50%",
-          transform: "translateX(-50%)",
-          bottom: "calc(24px + env(safe-area-inset-bottom, 0px))",
-          zIndex: (theme) => theme.zIndex.fab,
-        }}
-      >
-        Join
-      </Fab>
+      <JoinSubmit />
     </form>
   );
 }

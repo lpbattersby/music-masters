@@ -16,13 +16,13 @@ export default function CreateGroupForm() {
   })
 
   return (
-    <form aria-label="Create Group" action={action} className="flex flex-col justify-center items-center gap-6">
+    <form aria-label="Create Group" action={action} className="flex flex-col items-center gap-6">
       <TextInput 
         variant="outlined" 
         id="name" 
         name="name" 
         label="Name"
-        className="w-full"
+        fullWidth
         error={!!state?.errors?.name} 
         helperText={state?.errors?.name}
         value={formState.name}
@@ -34,7 +34,7 @@ export default function CreateGroupForm() {
         id="description" 
         name="description" 
         label="Description" 
-        className="w-full"
+        fullWidth
         error={!!state?.errors?.description}
         helperText={state?.errors?.description}
         value={formState.description}
@@ -46,7 +46,7 @@ export default function CreateGroupForm() {
           name="submissionWindowDays" 
           label="Submission Window" 
           type="number"
-          className="w-full"
+          fullWidth
           error={!!state?.errors?.submissionWindowDays}
           helperText={state?.errors?.submissionWindowDays}
           value={formState.submissionWindowDays}
@@ -65,7 +65,7 @@ export default function CreateGroupForm() {
         name="votingWindowDays" 
         label="Voting Window"
         type="number"
-        className="w-full"
+        fullWidth
         error={!!state?.errors?.votingWindowDays}
         helperText={state?.errors?.votingWindowDays}
         value={formState.votingWindowDays}
@@ -82,7 +82,7 @@ export default function CreateGroupForm() {
         variant="extended"
         type="submit"
         className="gradient-border"
-        sx={{ borderRadius: '50px', px: 5, py: 1.5, color: 'black' }}
+        sx={{ borderRadius: '50px', px: 5, py: 1.5, color: 'text.primary' }}
       >
         Confirm
       </Fab>

@@ -1,17 +1,10 @@
-import Image from "next/image";
+import PublicShell from '@/app/public-shell';
 import SignupForm from '@/app/signup/signup-form';
 
 export default function SignUp() {
   return (
-    <main className="flex min-w-half flex-col items-center justify-center gap-4 bg-white p-2 pb-10 m-5 rounded-4xl max-w-md">
-      <Image
-        src="/logo.png"
-        alt="Logo"
-        width={300}
-        height={300}
-        loading="eager"
-      />
+    <PublicShell>
       <SignupForm />
-    </main>
+    </PublicShell>
   );
 }

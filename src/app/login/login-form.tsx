@@ -15,14 +15,15 @@ export default function LoginForm() {
   })
 
   return (
-    <form aria-label="Login" action={action} className="flex flex-col justify-center items-center gap-6">
-      <b className="text-2xl">Login</b>
-      <br />
+    <form aria-label="Login" action={action} className="flex flex-col gap-6">
+      <h1 className="public-title">Login</h1>
       <TextField 
         variant="outlined" 
         id="username" 
         name="username" 
         label="Username" 
+        fullWidth
+        autoComplete="username"
         error={!!state?.errors?.username} 
         helperText={state?.errors?.username}
         value={formState.username}
@@ -35,6 +36,8 @@ export default function LoginForm() {
         name="password" 
         label="Password" 
         type="password" 
+        fullWidth
+        autoComplete="current-password"
         error={!!state?.errors?.password}
         slotProps={{
           formHelperText: { component: 'div' }
@@ -54,7 +57,7 @@ export default function LoginForm() {
         onChange={(e) => setFormState({ ...formState, password: e.target.value })}
       />
 
-      <div>
+      <div className="text-sm leading-relaxed">
         {"Don't have an account?"} <Link href="/signup">Sign up</Link>
       </div>
 
@@ -63,7 +66,7 @@ export default function LoginForm() {
         variant="extended"
         type="submit"
         className="gradient-border"
-        sx={{ borderRadius: '50px', px: 5, py: 1.5, color: 'black' }}
+        sx={{ borderRadius: '50px', px: 5, py: 1.5, color: 'text.primary', width: '100%' }}
       >
         Confirm
       </Fab>

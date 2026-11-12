@@ -15,14 +15,15 @@ export default function SignupForm() {
   })
 
   return (
-    <form aria-label="Sign up" action={action} className="flex flex-col justify-center items-center gap-6">
-      <b className="text-2xl">Sign Up</b>
-      <br />
+    <form aria-label="Sign up" action={action} className="flex flex-col gap-6">
+      <h1 className="public-title">Sign Up</h1>
       <TextField 
         variant="outlined" 
         id="username" 
         name="username" 
         label="Username" 
+        fullWidth
+        autoComplete="username"
         error={!!state?.errors?.username} 
         helperText={state?.errors?.username}
         value={formState.username}
@@ -34,6 +35,8 @@ export default function SignupForm() {
         id="displayName" 
         name="displayName" 
         label="Display Name" 
+        fullWidth
+        autoComplete="nickname"
         error={!!state?.errors?.displayName} 
         helperText={state?.errors?.displayName}
         value={formState.displayName}
@@ -46,6 +49,8 @@ export default function SignupForm() {
         name="password" 
         label="Password" 
         type="password" 
+        fullWidth
+        autoComplete="new-password"
         error={!!state?.errors?.password}
         slotProps={{
           formHelperText: { component: 'div' }
@@ -65,7 +70,7 @@ export default function SignupForm() {
         onChange={(e) => setFormState({ ...formState, password: e.target.value })}
       />
 
-      <div>
+      <div className="text-sm leading-relaxed">
         Already have an account? <Link href="/login">Log in</Link>
       </div>
 
@@ -74,7 +79,7 @@ export default function SignupForm() {
         variant="extended"
         type="submit"
         className="gradient-border"
-        sx={{ borderRadius: '50px', px: 5, py: 1.5, color: 'black' }}
+        sx={{ borderRadius: '50px', px: 5, py: 1.5, color: 'text.primary', width: '100%' }}
       >
         Confirm
       </Fab>

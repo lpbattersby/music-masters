@@ -15,7 +15,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
-    <html lang="en" className={geistSans.variable + " flex items-center justify-center"}>
+    <html lang="en" className={geistSans.variable}>
       <body className="min-h-screen w-full flex flex-col items-center">
         <Providers>{children}</Providers>
       </body>

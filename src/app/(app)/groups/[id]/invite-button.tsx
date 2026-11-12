@@ -1,57 +1,53 @@
 "use client";
 
 import { useState } from "react";
-import Fab from "@mui/material/Fab";
+import Button from "@mui/material/Button";
+import ContentCopy from "@mui/icons-material/ContentCopy";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 
 export default function InviteButton() {
-  const [copied, setCopied] = useState(false);
+  const [status, setStatus] = useState<"idle" | "copied" | "error">("idle");
 
   async function copyInviteLink() {
     try {
       await navigator.clipboard.writeText(window.location.href);
-      setCopied(true);
+      setStatus("copied");
     } catch {
-      setCopied(false);
+      setStatus("error");
     }
   }
 
   return (
   <>
-    <Fab
+    <Button
       color="primary"
-      aria-label={copied ? "Invite link copied" : "Copy invite link"}
-      variant="extended"
+      aria-label="Copy invite link"
+      variant="outlined"
+      startIcon={<ContentCopy />}
       onClick={copyInviteLink}
       sx={{
         width: 120,
         justifyContent: "center",
-        position: 'fixed',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        color: 'primary',
-        bottom: 'calc(24px + env(safe-area-inset-bottom, 0px))',
-        zIndex: (theme) => theme.zIndex.fab,
+        flexShrink: 0,
+        height: 40,
       }}
     >
       Invite
-    </Fab>
-    {copied && (
+    </Button>
       <Snackbar
-        open={copied}
+        open={status !== "idle"}
         autoHideDuration={3000}
-        onClose={() => setCopied(false)}
-        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        onClose={() => setStatus("idle")}
+        anchorOrigin={{ vertical: "bottom", horizontal: "center" }}
       >
         <Alert
-          severity="success"
-          onClose={() => setCopied(false)}
+          severity={status === "copied" ? "success" : "error"}
+          onClose={() => setStatus("idle")}
         >
-          Invite link copied
+          {status === "copied" ? "Invite link copied" : "Couldn't copy link. Please copy the page URL manually."}
         </Alert>
       </Snackbar>
-    )}
   </>
   );
 }

@@ -12,6 +12,9 @@ test.describe("create group journey", () => {
     await page.getByLabel("Password").fill(`${testUser.password}`);
     await page.getByRole("button", { name: "Confirm" }).click();
     await expect(page).toHaveURL(/\/dashboard$/);
+    await expect(page.getByRole("navigation", { name: "Main navigation" })).toBeVisible();
+    await expect(page.getByRole("banner").getByRole("button", { name: "Profile", exact: true })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Activity", exact: true })).toBeDisabled();
 
     await page.getByRole("button", { name: "Create Group" }).click();
 
@@ -44,6 +47,10 @@ test.describe("create group journey", () => {
     await page.getByRole("button", { name: "Confirm" }).click();
 
     await expect(page).toHaveURL(/\/groups\/\d+$/)
+    await expect(page.getByRole("navigation", { name: "Main navigation" })).toHaveCount(0);
+    await expect(page.getByRole("heading", { name: "Current round" })).toBeVisible();
+    await expect(page.getByText("No round yet.", { exact: true })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Create round", exact: true })).toBeDisabled();
     await page.goto('/dashboard')
     await expect(page.getByRole('link', {
       name: 'Valid Group Name',
@@ -96,7 +103,9 @@ test.describe("join group journey", () => {
       exact: true,
     }).click();
 
+    await page.getByRole("button", { name: "Profile", exact: true }).click();
     await page.getByRole("button", { name: "Logout" }).click();
+    await expect(page).toHaveURL("/");
 
     // Log in as the second user to join the group
     await page.goto("/login");
@@ -107,11 +116,13 @@ test.describe("join group journey", () => {
 
     // Simulate joining the group using the copied link
     await page.goto(`/groups/${group.groupId}`);
+    await expect(page.getByRole("button", { name: "Create round", exact: true })).toHaveCount(0);
     await page.getByRole("button", { name: "Join" }).click();
     await expect(page.getByRole("button", {
       name: "Copy invite link",
       exact: true,
     })).toBeVisible();
+    await expect(page.getByRole("button", { name: "Create round", exact: true })).toHaveCount(0);
 
     await page.goto("/dashboard");
     await expect(page.getByRole("link", {

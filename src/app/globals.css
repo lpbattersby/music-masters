@@ -1,41 +1,53 @@
 @import "tailwindcss";
 
-@keyframes shift { 0%,100% { background-position: 0% 0%; } 50% { background-position: 0% 100%; } }
+@theme inline {
+  --color-brand: var(--mui-palette-primary-main);
+  --color-yellow: var(--mui-palette-secondary-main);
+  --color-orange: var(--mui-palette-warning-main);
+  --color-rust: var(--mui-palette-warning-dark);
+  --color-blue: var(--mui-palette-info-main);
+  --color-beige: var(--mui-palette-background-default);
+  --color-paper: var(--mui-palette-background-paper);
+  --color-brown: var(--mui-palette-text-primary);
+  --color-muted: var(--mui-palette-text-secondary);
+  --color-outline: var(--mui-palette-divider);
+  --font-display: Georgia, serif;
+}
 
+body { background: var(--color-beige); color: var(--color-brown); }
+:focus-visible { outline: 3px solid var(--color-blue); outline-offset: 5px; }
+
+@layer components {
+  .app-content { @apply mx-auto w-[calc(100%-48px)] max-w-240 pt-8 pb-16 min-[481px]:pt-11; }
+  .display-heading { @apply font-display text-[clamp(36px,6vw,56px)] leading-[1.1] font-bold tracking-[-1.5px] wrap-anywhere; }
+  .public-title { @apply font-display text-[clamp(32px,4vw,44px)] leading-[1.15] font-bold tracking-tight; }
+}
+
+.vinyl-record {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: repeating-radial-gradient(circle, var(--color-brown) 0 3px, var(--color-rust) 4px 5px);
+  border: 9px solid var(--color-brown);
+}
+.vinyl-record > span {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: var(--color-yellow);
+  border: 24px solid var(--color-yellow);
+  box-shadow: inset 0 0 0 9px var(--color-brand);
+}
+.public-art-stripes {
+  background: linear-gradient(var(--color-brand) 0 25%, var(--color-orange) 25% 50%, var(--color-yellow) 50% 75%, var(--color-beige) 75%);
+  transform: rotate(-25deg) scale(1.5);
+}
 .gradient-border,
 .MuiFab-root.gradient-border {
   border: 3px solid transparent;
   background:
-    linear-gradient(#fff, #fff) padding-box,
-    linear-gradient(150deg, #e74346 0 25%, #ffbb5b 0 50%, #e74346 0 75%, #ffbb5b 0 100%) border-box;
-  background-size: auto, 100% 300%;   /* white layer normal; gradient 3x tall so it can pan */
-  animation: shift 12s ease-in-out infinite;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-}
-
-.bg-stripe {
-    background:
-      linear-gradient(150deg, #e74346 0 25%, #ffbb5b 0 50%, #e74346 0 75%, #ffbb5b 0 100%);
-}
-
-.animated-appbar::after {
-  content: '';
-  display: block;
-  height: 3px;
-  flex-shrink: 0;
-  background: linear-gradient(
-    150deg,
-    #e74346 0 25%,
-    #ffbb5b 0 50%,
-    #e74346 0 75%,
-    #ffbb5b 0 100%
-  );
-  background-size: 100% 300%;
-  animation: shift 12s ease-in-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .animated-appbar::after {
-    animation: none;
-  }
+    linear-gradient(var(--color-paper), var(--color-paper)) padding-box,
+    linear-gradient(120deg, var(--color-brand) 0 33%, var(--color-yellow) 33% 66%, var(--color-blue) 66%) border-box;
+  box-shadow: none;
 }

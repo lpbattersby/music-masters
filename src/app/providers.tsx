@@ -4,22 +4,34 @@ import type { ReactNode } from 'react'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 
 const theme = createTheme({
+  cssVariables: true,
   palette: {
     primary: {
-      light: '#ff6164',
-      main: '#e74346',
-      dark: '#871e20',
+      main: '#ac1802',
       contrastText: '#fff',
     },
     secondary: {
-      light: '#ffe189',
-      main: '#ffbb5b',
-      dark: '#eca848',
-      contrastText: '#000',
+      main: '#f4c600',
+      contrastText: '#281d16',
     },
+    warning: { main: '#dc4800', dark: '#9b4d29' },
+    background: { default: '#F5F0E5', paper: '#fdf9f2' },
+    text: { primary: '#281d16', secondary: '#795e4b', disabled: '#c4ae88' },
+    divider: '#dbc99f',
+    info: { main: '#00758a' },
   },
   typography: {
     fontFamily: 'var(--font-geist-sans), sans-serif',
+    button: { textTransform: 'none', fontWeight: 700 },
+  },
+  shape: { borderRadius: 16 },
+  components: {
+    MuiButton: { defaultProps: { disableElevation: true } },
+    MuiDialog: {
+      styleOverrides: { paper: ({ theme }) => ({ backgroundImage: 'none', border: `1px solid ${theme.palette.divider}` }) },
+    },
+    MuiDialogContent: { styleOverrides: { root: { paddingTop: '16px !important' } } },
+    MuiOutlinedInput: { styleOverrides: { root: ({ theme }) => ({ backgroundColor: theme.palette.background.paper }) } },
   },
 })
 
