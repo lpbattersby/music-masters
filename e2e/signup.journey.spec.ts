@@ -6,10 +6,10 @@ test.describe("sign up journey", () => {
   }) => {
     await page.goto("/");
     await page.getByRole("link", { name: "Sign Up" }).click();
-    await expect(page).toHaveURL(/\/signup$/);
+    await expect(page).toHaveURL("/signup");
 
     await page.getByLabel("Display name").fill("Ada Lovelace");
-    await page.getByLabel("Email").fill(`journey-${Date.now()}@example.com`);
+    await page.getByLabel("Username").fill(`signup-journey`);
     await page.getByLabel("Password").fill("supersecret");
     await page.getByRole("button", { name: "Sign up" }).click();
 

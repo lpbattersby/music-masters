@@ -1,5 +1,5 @@
-import { getDb } from "@/lib/db";
-import { users } from "@/lib/schema";
+import { getDb } from "@/app/lib/db";
+import { users } from "@/app/lib/schema";
 
 export async function resetDb(): Promise<void> {
   const db = await getDb();

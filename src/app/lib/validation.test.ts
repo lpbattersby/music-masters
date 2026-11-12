@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { createUserSchema } from "@/lib/validation";
+import { createUserSchema } from "@/app/lib/validation";
 
 describe("createUserSchema", () => {
   it("accepts a valid payload", () => {

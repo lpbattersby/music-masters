@@ -5,7 +5,7 @@ import { createClient } from "@libsql/client";
 import { drizzle, type LibSQLDatabase } from "drizzle-orm/libsql";
 import { migrate } from "drizzle-orm/libsql/migrator";
 
-import * as schema from "@/lib/schema";
+import * as schema from "@/app/lib/schema";
 
 const DATABASE_URL = process.env.DATABASE_URL ?? "file:./data/app.db";
 

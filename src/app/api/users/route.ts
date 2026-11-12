@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
-import { createUser, listUsers } from "@/lib/users";
-import { createUserSchema } from "@/lib/validation";
+import { createUser, listUsers } from "@/app/lib/users";
+import { createUserSchema } from "@/app/lib/validation";
 
 export async function GET() {
   const users = await listUsers();
