@@ -13,15 +13,16 @@ describe("users queries", () => {
       password: "password"
     });
 
-    expect(created.userId).toBeGreaterThan(0);
+    expect(created.userId).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
     expect(created.createdAt).toBeTruthy();
 
     const found = await getUserById(created.userId);
     expect(found).toMatchObject({ username: "ada_username", displayName: "Ada" });
   });
 
-  it("returns undefined for a missing id", async () => {
-    expect(await getUserById(999)).toBeUndefined();
+  it("returns undefined for a missing user", async () => {
+    expect(await getUserById("non-existent-id")).toBeUndefined();
+    expect(await getUserByUsername("non_existent_username")).toBeUndefined();
   });
 
   it("lists all users", async () => {
@@ -33,10 +34,6 @@ describe("users queries", () => {
 
     const foundByUsername = await getUserByUsername("a_username");
     expect(foundByUsername).toMatchObject({ username: "a_username", displayName: "A" });
-  });
-
-  it("returns undefined for a missing username", async () => {
-    expect(await getUserByUsername("non_existent_username")).toBeUndefined();
   });
 
   it("enforces unique usernames", async () => {

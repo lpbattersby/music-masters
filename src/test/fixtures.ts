@@ -57,7 +57,7 @@ export const createTestUsers = (count: number) =>
     ),
   )
 
-export const createTestGroups = (count: number, createdBy: number) =>
+export const createTestGroups = (count: number, createdBy: string) =>
   Promise.all(
     Array.from({ length: count }, () =>
       createGroup({

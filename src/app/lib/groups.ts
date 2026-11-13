@@ -9,14 +9,14 @@ export async function createGroup(input: {
   description: string;
   submissionWindowDays: number;
   votingWindowDays: number;
-  createdBy: number;
+  createdBy: string;
 }): Promise<Group> {
   const db = await getDb();
   const [group] = await db.insert(groups).values(input).returning();
   return group;
 }
 
-export async function getGroupById(id: number): Promise<Group | undefined> {
+export async function getGroupById(id: string): Promise<Group | undefined> {
   const db = await getDb();
   return db.query.groups.findFirst({ where: eq(groups.groupId, id) });
 }
@@ -31,7 +31,7 @@ export async function listGroups(): Promise<Group[]> {
   return db.select().from(groups).orderBy(desc(groups.createdAt));
 }
 
-export async function getGroupsByUserId(userId: number): Promise<Group[]> {
+export async function getGroupsByUserId(userId: string): Promise<Group[]> {
   const db = await getDb()
 
   return db
@@ -42,7 +42,7 @@ export async function getGroupsByUserId(userId: number): Promise<Group[]> {
     .orderBy(desc(groups.createdAt))
 }
 
-export async function getGroupForUser(groupId: number, userId: number) {
+export async function getGroupForUser(groupId: string, userId: string) {
   const db = await getDb()
 
   const [group] = await db
@@ -58,8 +58,8 @@ export async function getGroupForUser(groupId: number, userId: number) {
 }
 
 export async function isUserMemberOfGroup(
-  groupId: number,
-  userId: number,
+  groupId: string,
+  userId: string,
 ): Promise<boolean> {
   const db = await getDb();
   const [membership] = await db

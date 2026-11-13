@@ -19,7 +19,7 @@ export async function createUser(input: {
   return user;
 }
 
-export async function getUserById(id: number): Promise<User | undefined> {
+export async function getUserById(id: string): Promise<User | undefined> {
   const db = await getDb();
   return db.query.users.findFirst({ where: eq(users.userId, id) });
 }
@@ -34,7 +34,7 @@ export async function listUsers(): Promise<User[]> {
   return db.select().from(users).orderBy(desc(users.createdAt));
 }
 
-export async function getMembersByGroupId(groupId: number): Promise<User[]> {
+export async function getMembersByGroupId(groupId: string): Promise<User[]> {
   const db = await getDb();
   const members = await db
     .select(getTableColumns(users))

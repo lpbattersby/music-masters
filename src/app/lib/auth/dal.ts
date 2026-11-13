@@ -51,13 +51,8 @@ export const getCurrentUser = cache(async () => {
   }
 })
 
-export async function getCurrentUserGroup(groupId: number) {
+export async function getCurrentUserGroup(groupId: string) {
   const user = await getCurrentUser();
-
-  if (!Number.isSafeInteger(groupId) || groupId <= 0) {
-    notFound();
-  }
-
   const group = await getGroupById(groupId);
 
   if (!group) {

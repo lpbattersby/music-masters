@@ -9,7 +9,7 @@ function JoinSubmit() {
   return <Button type="submit" variant="contained" disabled={pending}>{pending ? "Joining..." : "Join"}</Button>;
 }
 
-export default function JoinButton({ groupId }: { groupId: number }) {
+export default function JoinButton({ groupId }: { groupId: string }) {
   return (
     <form action={joinGroupAction}>
       <input type="hidden" name="groupId" value={groupId} />

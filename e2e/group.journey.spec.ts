@@ -1,6 +1,61 @@
 import AxeBuilder from '@axe-core/playwright';
 import { createMembership } from "@/app/lib/memberships";
+import { createGroup } from "@/app/lib/groups";
 import { expect, test, createTestUsers, createTestGroups, testUser } from "@/test/fixtures";
+
+test("group names stay readable over the artwork at mobile and desktop widths", async ({ page }) => {
+  const [user] = await createTestUsers(1);
+  const names = [
+    "Music club",
+    "A group with a much longer name that wraps over several lines",
+    "Supercalifragilisticexpialidocious".repeat(4),
+  ];
+  for (const name of names) {
+    const group = await createGroup({
+      name, description: "Our music", submissionWindowDays: 2, votingWindowDays: 2, createdBy: user.userId,
+    });
+    await createMembership({ userId: user.userId, groupId: group.groupId });
+  }
+
+  await page.goto("/login");
+  await page.getByLabel("Username").fill(user.username);
+  await page.getByLabel("Password").fill(testUser.password);
+  await page.getByRole("button", { name: "Confirm" }).click();
+  await expect(page).toHaveURL(/\/dashboard$/);
+
+  for (const width of [375, 1024]) {
+    await page.setViewportSize({ width, height: 900 });
+    const colours = new Set<string>();
+    for (const name of names) {
+      const card = page.getByRole("link", { name, exact: true });
+      await expect(card).toBeVisible();
+      const layout = await card.locator("h2").evaluate((heading) => {
+        const artwork = heading.parentElement!;
+        const description = artwork.lastElementChild!;
+        const headingRect = heading.getBoundingClientRect();
+        const artworkRect = artwork.getBoundingClientRect();
+        const descriptionRect = description.getBoundingClientRect();
+        return {
+          background: getComputedStyle(heading).backgroundColor,
+          artworkBackground: getComputedStyle(artwork).backgroundColor,
+          zIndex: getComputedStyle(heading).zIndex,
+          headingRect: { left: headingRect.left, right: headingRect.right, bottom: headingRect.bottom },
+          artworkRect: { left: artworkRect.left, right: artworkRect.right, bottom: artworkRect.bottom },
+          descriptionTop: descriptionRect.top,
+        };
+      });
+      expect(layout.background).toBe(layout.artworkBackground);
+      expect(layout.background).not.toBe("rgba(0, 0, 0, 0)");
+      expect(Number(layout.zIndex)).toBeGreaterThan(0);
+      expect(layout.headingRect.left).toBeGreaterThanOrEqual(layout.artworkRect.left);
+      expect(layout.headingRect.right).toBeLessThanOrEqual(layout.artworkRect.right);
+      expect(layout.headingRect.bottom).toBeLessThanOrEqual(layout.descriptionTop);
+      expect(layout.descriptionTop).toBeLessThan(layout.artworkRect.bottom);
+      colours.add(layout.background);
+    }
+    expect(colours.size).toBe(3);
+  }
+});
 
 test.describe("create group journey", () => {
   test("a visitor can create a group and get redirected to the group page", async ({
@@ -63,7 +118,7 @@ test.describe("create group journey", () => {
     await page.getByLabel("Voting window").fill("1");
     await page.getByRole("button", { name: "Confirm" }).click();
 
-    await expect(page).toHaveURL(/\/groups\/\d+$/)
+    await expect(page).toHaveURL(/\/groups\/[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$/i)
     await expect(page.getByRole("navigation", { name: "Main navigation" })).toHaveCount(0);
     await expect(page.getByRole("heading", { name: "Current round" })).toBeVisible();
     await expect(page.getByText("No round yet.", { exact: true })).toBeVisible();
@@ -98,7 +153,7 @@ test.describe("view group journey", () => {
     await page.getByRole("button", { name: "Confirm" }).click();
 
     await page.getByRole('link', { name: group.name }).click();
-    await expect(page).toHaveURL(/\/groups\/\d+/);
+    await expect(page).toHaveURL(`/groups/${group.groupId}`);
     await expect(page.getByRole('main')).toContainText(`${group.name}`)
     await expect(page.getByRole('main')).toContainText(`${group.description}`)
   });

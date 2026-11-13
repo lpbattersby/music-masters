@@ -25,10 +25,10 @@ export default function GroupList({ groups }: { groups: Group[] }) {
       {groups.map((group, index) => (
         <Card key={group.groupId}>
         <CardActionArea component={Link} href={`/groups/${group.groupId}`} aria-label={group.name} sx={{ height: '100%' }}>
-          <div className={`relative h-47.5 overflow-hidden p-4 ${['bg-brand text-paper', 'bg-blue text-paper', 'bg-yellow'][index % 3]}`} aria-hidden="true">
-            <Typography variant="h2" component="h2">{group.name}</Typography>
+          <div className={`relative flex min-h-47.5 flex-col items-start gap-3 overflow-hidden p-4 ${['bg-brand text-paper', 'bg-blue text-paper', 'bg-yellow'][index % 3]}`} aria-hidden="true">
+            <Typography variant="h2" component="h2" className={`relative z-1 max-w-full rounded-sm`}>{group.name}</Typography>
             <span className="vinyl-record -top-6 -right-3.5 size-55"><span /></span>
-            <span className="absolute bottom-3.5 left-4 text-[9px] font-bold tracking-[1.5px] uppercase">{group.description}</span>
+            <span className={`relative z-1 mt-auto max-w-full rounded-sm text-[9px] font-bold tracking-[1.5px] uppercase [overflow-wrap:anywhere]`}>{group.description}</span>
           </div>
           <CardContent sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2 }}>
             <div className="min-w-0">

@@ -17,15 +17,16 @@ describe("groups queries", () => {
         createdBy: created_user.userId
     });
 
-    expect(created.groupId).toBeGreaterThan(0);
+    expect(created.groupId).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
     expect(created.createdAt).toBeTruthy();
 
     const found = await getGroupById(created.groupId);
     expect(found).toMatchObject({ name: "new_group", description: "test description" });
   });
 
-  it("returns undefined for a missing id", async () => {
-    expect(await getGroupById(999)).toBeUndefined();
+  it("returns undefined for a missing group", async () => {
+    expect(await getGroupById("non-existent-id")).toBeUndefined();
+    expect(await getGroupByName("non_existent_group")).toBeUndefined();
   });
 
   it("lists all groups", async () => {
@@ -38,10 +39,6 @@ describe("groups queries", () => {
 
     const foundByName = await getGroupByName("group_a");
     expect(foundByName).toMatchObject({ name: "group_a", description: "A" });
-  });
-
-  it("returns undefined for a missing name", async () => {
-    expect(await getGroupByName("non_existent_group")).toBeUndefined();
   });
 
   it("enforces unique group names", async () => {
@@ -64,7 +61,7 @@ describe("groups queries", () => {
 
   it("enforces created by real user", async () => {
     await expect(
-      createGroup({ name: "invalid_user_group", description: "Invalid", submissionWindowDays: 2, votingWindowDays: 2, createdBy: 999 }),
+      createGroup({ name: "invalid_user_group", description: "Invalid", submissionWindowDays: 2, votingWindowDays: 2, createdBy: "non-existent-id" }),
     ).rejects.toThrow();
   });
 });

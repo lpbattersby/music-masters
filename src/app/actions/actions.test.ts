@@ -26,8 +26,8 @@ vi.mock("next/navigation", () => ({
   notFound: () => { throw new Error("not-found"); },
 }));
 
-const user = { userId: 1, username: "alice", displayName: "Alice", passwordHash: "hash", createdAt: "today" };
-const group = { groupId: 2, name: "Music", description: "Our music", submissionWindowDays: 2, votingWindowDays: 3, createdBy: 1, createdAt: "today" };
+const user = { userId: "1", username: "alice", displayName: "Alice", passwordHash: "hash", createdAt: "today" };
+const group = { groupId: "2", name: "Music", description: "Our music", submissionWindowDays: 2, votingWindowDays: 3, createdBy: "1", createdAt: "today" };
 const form = (values: Record<string, string>) => {
   const data = new FormData();
   for (const [key, value] of Object.entries(values)) data.set(key, value);
@@ -112,8 +112,8 @@ describe("group actions", () => {
 
   it("creates the group and the creator's membership", async () => {
     await expect(createGroupAction(undefined, form(input))).rejects.toThrow("redirect:/groups/2");
-    expect(createGroup).toHaveBeenCalledWith({ ...input, submissionWindowDays: 2, votingWindowDays: 3, createdBy: 1 });
-    expect(createMembership).toHaveBeenCalledWith({ groupId: 2, userId: 1 });
+    expect(createGroup).toHaveBeenCalledWith({ ...input, submissionWindowDays: 2, votingWindowDays: 3, createdBy: user.userId });
+    expect(createMembership).toHaveBeenCalledWith({ groupId: group.groupId, userId: user.userId });
   });
 
   it("redirects missing users for both actions without writing", async () => {
@@ -124,8 +124,12 @@ describe("group actions", () => {
     expect(createGroup).not.toHaveBeenCalled();
   });
 
-  it.each(["", "0", "-1", "1.5", "invalid", "9007199254740992"])("rejects invalid group id %s", async (groupId) => {
-    await expect(joinGroupAction(form({ groupId }))).rejects.toThrow("not-found");
+  it.each([new FormData(), form({ groupId: "" }), (() => {
+    const data = new FormData();
+    data.set("groupId", new Blob(["invalid"]), "group.txt");
+    return data;
+  })()])("rejects missing or non-text group IDs", async (data) => {
+    await expect(joinGroupAction(data)).rejects.toThrow("not-found");
     expect(getGroupById).not.toHaveBeenCalled();
     expect(createMembership).not.toHaveBeenCalled();
   });
@@ -138,7 +142,7 @@ describe("group actions", () => {
 
   it("joins an existing group as the authenticated user", async () => {
     await expect(joinGroupAction(form({ groupId: "2" }))).rejects.toThrow("redirect:/groups/2");
-    expect(createMembership).toHaveBeenCalledWith({ groupId: 2, userId: 1 });
+    expect(createMembership).toHaveBeenCalledWith({ groupId: group.groupId, userId: user.userId });
   });
 
   it("does not redirect successfully when membership creation fails", async () => {

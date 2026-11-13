@@ -4,7 +4,7 @@ import { createMembership, getMembershipsByGroupId, getMembershipsByUserId } fro
 import { resetDb } from "@/test/helpers";
 import { createTestUsers, createTestGroups } from "@/test/fixtures";
 
-describe("groups queries", () => {
+describe("membership queries", () => {
   beforeEach(resetDb);
 
   it("retrieves an empty list when no memberships exist", async () => {

@@ -52,12 +52,10 @@ export async function joinGroupAction(formData: FormData) {
     redirect("/login");
   }
 
-  const groupId = Number(formData.get("groupId"));
-
-  if (!Number.isSafeInteger(groupId) || groupId <= 0) {
+  const groupId = formData.get("groupId");
+  if (typeof groupId !== "string" || !groupId) {
     notFound();
   }
-
   const group = await getGroupById(groupId);
 
   if (!group) {

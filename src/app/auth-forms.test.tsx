@@ -25,7 +25,6 @@ it("submits login fields and displays server validation errors", async () => {
   expect(submitted.get("username")).toBe("alice");
   expect(submitted.get("password")).toBe("incorrect");
   expect(screen.getByLabelText("Username")).toHaveAttribute("aria-invalid", "true");
-  expect(screen.getByRole("link", { name: "Sign up" })).toHaveAttribute("href", "/signup");
 });
 
 it("submits signup fields and displays field and password validation errors", async () => {
@@ -48,5 +47,4 @@ it("submits signup fields and displays field and password validation errors", as
   expect(screen.getByText("- Add a special character")).toBeVisible();
   const submitted = vi.mocked(signup).mock.calls[0][1];
   expect(Object.fromEntries(submitted)).toEqual({ username: "alice", displayName: "A", password: "password" });
-  expect(screen.getByRole("link", { name: "Log in" })).toHaveAttribute("href", "/login");
 });

@@ -1,0 +1,252 @@
+{
+  "version": "6",
+  "dialect": "sqlite",
+  "id": "753ae7fa-f5d2-4b10-ae25-0dd552ac6643",
+  "prevId": "722704e7-4baf-4747-b62c-a8e34ac33dd1",
+  "tables": {
+    "groups": {
+      "name": "groups",
+      "columns": {
+        "group_id": {
+          "name": "group_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "submission_window_days": {
+          "name": "submission_window_days",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "voting_window_days": {
+          "name": "voting_window_days",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(datetime('now'))"
+        },
+        "created_by": {
+          "name": "created_by",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {
+        "groups_name_unique": {
+          "name": "groups_name_unique",
+          "columns": [
+            "name"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "groups_created_by_users_user_id_fk": {
+          "name": "groups_created_by_users_user_id_fk",
+          "tableFrom": "groups",
+          "tableTo": "users",
+          "columnsFrom": [
+            "created_by"
+          ],
+          "columnsTo": [
+            "user_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "groups_group_id_uuid": {
+          "name": "groups_group_id_uuid",
+          "value": "length(\"groups\".\"group_id\") = 36\n    and substr(\"groups\".\"group_id\", 9, 1) = '-'\n    and substr(\"groups\".\"group_id\", 14, 1) = '-'\n    and substr(\"groups\".\"group_id\", 19, 1) = '-'\n    and substr(\"groups\".\"group_id\", 24, 1) = '-'\n    and substr(\"groups\".\"group_id\", 15, 1) glob '[1-8]'\n    and lower(substr(\"groups\".\"group_id\", 20, 1)) glob '[89ab]'\n    and length(replace(\"groups\".\"group_id\", '-', '')) = 32\n    and lower(replace(\"groups\".\"group_id\", '-', '')) not glob '*[^0-9a-f]*'"
+        },
+        "groups_created_by_uuid": {
+          "name": "groups_created_by_uuid",
+          "value": "length(\"groups\".\"created_by\") = 36\n    and substr(\"groups\".\"created_by\", 9, 1) = '-'\n    and substr(\"groups\".\"created_by\", 14, 1) = '-'\n    and substr(\"groups\".\"created_by\", 19, 1) = '-'\n    and substr(\"groups\".\"created_by\", 24, 1) = '-'\n    and substr(\"groups\".\"created_by\", 15, 1) glob '[1-8]'\n    and lower(substr(\"groups\".\"created_by\", 20, 1)) glob '[89ab]'\n    and length(replace(\"groups\".\"created_by\", '-', '')) = 32\n    and lower(replace(\"groups\".\"created_by\", '-', '')) not glob '*[^0-9a-f]*'"
+        },
+        "groups_submission_window_positive": {
+          "name": "groups_submission_window_positive",
+          "value": "\"groups\".\"submission_window_days\" > 0"
+        },
+        "groups_voting_window_positive": {
+          "name": "groups_voting_window_positive",
+          "value": "\"groups\".\"voting_window_days\" > 0"
+        }
+      }
+    },
+    "memberships": {
+      "name": "memberships",
+      "columns": {
+        "group_id": {
+          "name": "group_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "joined_at": {
+          "name": "joined_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(datetime('now'))"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "memberships_group_id_groups_group_id_fk": {
+          "name": "memberships_group_id_groups_group_id_fk",
+          "tableFrom": "memberships",
+          "tableTo": "groups",
+          "columnsFrom": [
+            "group_id"
+          ],
+          "columnsTo": [
+            "group_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "memberships_user_id_users_user_id_fk": {
+          "name": "memberships_user_id_users_user_id_fk",
+          "tableFrom": "memberships",
+          "tableTo": "users",
+          "columnsFrom": [
+            "user_id"
+          ],
+          "columnsTo": [
+            "user_id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {
+        "memberships_group_id_user_id_pk": {
+          "columns": [
+            "group_id",
+            "user_id"
+          ],
+          "name": "memberships_group_id_user_id_pk"
+        }
+      },
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "memberships_group_id_uuid": {
+          "name": "memberships_group_id_uuid",
+          "value": "length(\"memberships\".\"group_id\") = 36\n    and substr(\"memberships\".\"group_id\", 9, 1) = '-'\n    and substr(\"memberships\".\"group_id\", 14, 1) = '-'\n    and substr(\"memberships\".\"group_id\", 19, 1) = '-'\n    and substr(\"memberships\".\"group_id\", 24, 1) = '-'\n    and substr(\"memberships\".\"group_id\", 15, 1) glob '[1-8]'\n    and lower(substr(\"memberships\".\"group_id\", 20, 1)) glob '[89ab]'\n    and length(replace(\"memberships\".\"group_id\", '-', '')) = 32\n    and lower(replace(\"memberships\".\"group_id\", '-', '')) not glob '*[^0-9a-f]*'"
+        },
+        "memberships_user_id_uuid": {
+          "name": "memberships_user_id_uuid",
+          "value": "length(\"memberships\".\"user_id\") = 36\n    and substr(\"memberships\".\"user_id\", 9, 1) = '-'\n    and substr(\"memberships\".\"user_id\", 14, 1) = '-'\n    and substr(\"memberships\".\"user_id\", 19, 1) = '-'\n    and substr(\"memberships\".\"user_id\", 24, 1) = '-'\n    and substr(\"memberships\".\"user_id\", 15, 1) glob '[1-8]'\n    and lower(substr(\"memberships\".\"user_id\", 20, 1)) glob '[89ab]'\n    and length(replace(\"memberships\".\"user_id\", '-', '')) = 32\n    and lower(replace(\"memberships\".\"user_id\", '-', '')) not glob '*[^0-9a-f]*'"
+        }
+      }
+    },
+    "users": {
+      "name": "users",
+      "columns": {
+        "user_id": {
+          "name": "user_id",
+          "type": "text",
+          "primaryKey": true,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "username": {
+          "name": "username",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "display_name": {
+          "name": "display_name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "password_hash": {
+          "name": "password_hash",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(datetime('now'))"
+        }
+      },
+      "indexes": {
+        "users_username_unique": {
+          "name": "users_username_unique",
+          "columns": [
+            "username"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "checkConstraints": {
+        "users_user_id_uuid": {
+          "name": "users_user_id_uuid",
+          "value": "length(\"users\".\"user_id\") = 36\n    and substr(\"users\".\"user_id\", 9, 1) = '-'\n    and substr(\"users\".\"user_id\", 14, 1) = '-'\n    and substr(\"users\".\"user_id\", 19, 1) = '-'\n    and substr(\"users\".\"user_id\", 24, 1) = '-'\n    and substr(\"users\".\"user_id\", 15, 1) glob '[1-8]'\n    and lower(substr(\"users\".\"user_id\", 20, 1)) glob '[89ab]'\n    and length(replace(\"users\".\"user_id\", '-', '')) = 32\n    and lower(replace(\"users\".\"user_id\", '-', '')) not glob '*[^0-9a-f]*'"
+        }
+      }
+    }
+  },
+  "views": {},
+  "enums": {},
+  "_meta": {
+    "schemas": {},
+    "tables": {},
+    "columns": {}
+  },
+  "internal": {
+    "indexes": {}
+  }
+}

@@ -16,9 +16,9 @@ export default async function GroupPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const { group, isMember } = await getCurrentUserGroup(Number(id));
+  const { group, isMember } = await getCurrentUserGroup(id);
   const user = await getCurrentUser();
-  const members = await getMembersByGroupId(Number(id));
+  const members = await getMembersByGroupId(id);
 
   return (
     <main className="app-content flex flex-col gap-6">
