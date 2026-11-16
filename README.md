@@ -6,6 +6,27 @@ A game where you compete in themed rounds to see who can submit the best song fo
 
 ## Getting Started
 
+# Download and install nvm:
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.41.0/install.sh | bash
+
+# in lieu of restarting the shell
+\. "$HOME/.nvm/nvm.sh"
+
+# Download and install Node.js:
+nvm install 24
+
+# Verify the Node.js version:
+node -v # Should print "v24.22.3".
+
+# Verify npm version:
+npm -v # Should print "11.19.1".
+
+Install packages:
+
+```bash
+npm install
+```
+
 Run the development server:
 
 ```bash
