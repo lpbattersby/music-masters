@@ -43,6 +43,20 @@
       "when": 1794577413989,
       "tag": "0005_old_lilith",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "6",
+      "when": 1794905254632,
+      "tag": "0006_lethal_iron_patriot",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "6",
+      "when": 1794905502814,
+      "tag": "0007_heavy_zaran",
+      "breakpoints": true
     }
   ]
 }

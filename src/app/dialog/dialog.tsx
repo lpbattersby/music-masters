@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, type ReactNode } from 'react'
+import type { ReactNode } from 'react'
 import Dialog from '@mui/material/Dialog'
 import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
@@ -11,17 +11,17 @@ interface Props {
   id: string
   label: string
   children: ReactNode
-  openState: boolean
+  open: boolean
+  onClose: () => void
 }
 
-export default function MMDialog({ openState, id, label, children }: Props) {
-  const [open, setOpen] = useState(openState)
+export default function MMDialog({ open, onClose, id, label, children }: Props) {
   const titleId = `${id}-title`
 
   return (
     <Dialog
     open={open}
-    onClose={() => setOpen(false)}
+    onClose={onClose}
     aria-labelledby={titleId}
     fullWidth
     maxWidth="sm"
@@ -31,7 +31,7 @@ export default function MMDialog({ openState, id, label, children }: Props) {
     </DialogTitle>
     <DialogContent>{children}</DialogContent>
     <DialogActions>
-        <Button onClick={() => setOpen(false)}>Close</Button>
+        <Button onClick={onClose}>Close</Button>
     </DialogActions>
     </Dialog>
   )

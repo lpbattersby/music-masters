@@ -3,7 +3,7 @@
 import { verifySession } from "@/app/lib/auth/dal"
 import { getUserByUsername } from "@/app/lib/users"
 import { createRound } from "@/app/lib/rounds"
-import { createMembership } from "@/app/lib/memberships"
+import { getGroupById } from "@/app/lib/groups"
 import { FormState, CreateRoundFormSchema } from "@/app/lib/definitions"
 import { notFound, redirect } from "next/navigation";
 
@@ -12,10 +12,11 @@ export async function createRoundAction(
   formData: FormData,
 ) {
     const validatedFields = CreateRoundFormSchema.safeParse({
+      groupId: formData.get('groupId'),
       name: formData.get('name'),
       description: formData.get('description'),
-      submissionWindowDays: formData.get('submissionWindowDays'),
-      votingWindowDays: formData.get('votingWindowDays'),
+      submissionDeadline: formData.get('submissionDeadline'),
+      votingDeadline: formData.get('votingDeadline'),
     })
 
     if (!validatedFields.success) {
@@ -30,15 +31,12 @@ export async function createRoundAction(
         redirect('/login')
     }
 
-    const round = await createRound({
-        ...validatedFields.data,
-        createdBy: user.userId,
-    })
+    const group = await getGroupById(validatedFields.data.groupId)
+    if (!group || group.createdBy !== user.userId) {
+        notFound()
+    }
 
-    await createMembership({
-        groupId: round.roundId,
-        userId: user.userId,
-    })
+    const round = await createRound(validatedFields.data)
 
     redirect(`/groups/${round.groupId}`)
 }

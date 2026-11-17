@@ -1,23 +1,34 @@
 'use client'
 
-import { createRoundAction } from '@/app/actions/groups'
+import { createRoundAction } from '@/app/actions/rounds'
 import { useActionState, useState } from 'react'
 import TextInput from '@mui/material/TextField';
-import InputAdornment from '@mui/material/InputAdornment';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
+import Alert from '@mui/material/Alert';
+import { Group } from '@/app/lib/schema';
+import findDeadline from '@/app/lib/helpers';
 
-export default function CreateRoundForm() {
+export default function CreateRoundForm({ group }: { group: Group }) {
   const [state, action, pending] = useActionState(createRoundAction, undefined)
-  const [formState, setFormState] = useState({
-    name: '',
-    description: '',
-    submissionWindowDays: '',
-    votingWindowDays: ''
+  const [formState, setFormState] = useState(() => {
+    const today = new Date()
+
+    return {
+      name: '',
+      description: '',
+      submissionDeadline: findDeadline(group.submissionWindowDays, today),
+      votingDeadline: findDeadline(
+        group.submissionWindowDays + group.votingWindowDays,
+        today,
+      ),
+    }
   })
 
   return (
     <Stack component="form" aria-label="Create Round" action={action} spacing={3} sx={{ alignItems: 'center' }}>
+      <input type="hidden" name="groupId" value={group.groupId} />
+      {state?.errors?.groupId && <Alert severity="error">{state.errors.groupId.join(' ')}</Alert>}
       <TextInput 
         variant="outlined" 
         id="name" 
@@ -41,41 +52,31 @@ export default function CreateRoundForm() {
         value={formState.description}
         onChange={(e) => setFormState({ ...formState, description: e.target.value })}
       />
-      <TextInput 
-          variant="outlined" 
-          id="submissionWindow" 
-          name="submissionWindowDays" 
-          label="Submission Window" 
-          type="number"
-          fullWidth
-          error={!!state?.errors?.submissionWindowDays}
-          helperText={state?.errors?.submissionWindowDays}
-          value={formState.submissionWindowDays}
-          onChange={(e) => setFormState({ ...formState, submissionWindowDays: e.target.value })}
-          slotProps={{
-            input: {
-              endAdornment: <InputAdornment position="end">days</InputAdornment>
-            }
-          }}
-        />
-    
 
       <TextInput 
         variant="outlined" 
-        id="votingWindow" 
-        name="votingWindowDays" 
-        label="Voting Window"
-        type="number"
+        id="submissionDeadline" 
+        name="submissionDeadline" 
+        label="Submission Deadline" 
+        type="date"
         fullWidth
-        error={!!state?.errors?.votingWindowDays}
-        helperText={state?.errors?.votingWindowDays}
-        value={formState.votingWindowDays}
-        onChange={(e) => setFormState({ ...formState, votingWindowDays: e.target.value })}
-        slotProps={{
-          input: {
-            endAdornment: <InputAdornment position="end">days</InputAdornment>
-          }
-        }}
+        error={!!state?.errors?.submissionDeadline}
+        helperText={state?.errors?.submissionDeadline}
+        value={formState.submissionDeadline}
+        onChange={(e) => setFormState({ ...formState, submissionDeadline: e.target.value })}
+      />
+
+      <TextInput 
+        variant="outlined" 
+        id="votingDeadline" 
+        name="votingDeadline" 
+        label="Voting Deadline" 
+        type="date"
+        fullWidth
+        error={!!state?.errors?.votingDeadline}
+        helperText={state?.errors?.votingDeadline}
+        value={formState.votingDeadline}
+        onChange={(e) => setFormState({ ...formState, votingDeadline: e.target.value })}
       />
 
       <Button

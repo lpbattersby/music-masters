@@ -54,6 +54,7 @@ export type FormState =
         description?: string[]
         submissionWindowDays?: string[]
         votingWindowDays?: string[]
+        groupId?: string[]
       }
       message?: string
     }
@@ -66,3 +67,22 @@ export const LoginFormSchema = SignupFormSchema
   })
 
 export type LoginInput = z.infer<typeof LoginFormSchema>
+
+export const CreateRoundFormSchema = z.object({
+  groupId: z.uuid({ error: 'A valid group is required.' }),
+  name: z.string().trim().min(2, { error: 'Name must be at least 2 characters long.' }),
+  description: z.string().trim().min(3, { error: 'Description must be at least 3 characters long.' }),
+  submissionDeadline: z.iso.date().refine(
+    (date) => date > new Date().toISOString().slice(0, 10),
+    { error: 'Submission deadline must be after today (UTC).' },
+  ),
+  votingDeadline: z.iso.date().refine(
+    (date) => date > new Date().toISOString().slice(0, 10),
+    { error: 'Voting deadline must be after today (UTC).' },
+  ),
+}).refine(
+  (data) => data.votingDeadline > data.submissionDeadline,
+  { path: ['votingDeadline'], error: 'Voting deadline must be after the submission deadline.' },
+)
+
+export type CreateRoundInput = z.infer<typeof CreateRoundFormSchema>

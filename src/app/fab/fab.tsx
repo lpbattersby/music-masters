@@ -2,13 +2,10 @@
 
 import { useState, type ReactNode } from 'react'
 import Fab from '@mui/material/Fab'
-import Dialog from '@mui/material/Dialog'
-import DialogTitle from '@mui/material/DialogTitle'
-import DialogContent from '@mui/material/DialogContent'
 import Button from '@mui/material/Button'
-import DialogActions from '@mui/material/DialogActions'
 import { Add, LibraryMusicOutlined, History } from '@mui/icons-material'
 import Link from 'next/link'
+import MMDialog from '../dialog/dialog'
 
 interface Props {
   id: string
@@ -20,7 +17,6 @@ interface Props {
 
 export default function MMFab({ id, label, text, children, navigation = false }: Props) {
   const [open, setOpen] = useState(false)
-  const titleId = `${id}-title`
 
   return (
     <>
@@ -60,21 +56,14 @@ export default function MMFab({ id, label, text, children, navigation = false }:
         {navigation ? <Add sx={{ fontSize: 32 }} /> : text}
       </Fab>
 
-      <Dialog
+      <MMDialog
         open={open}
         onClose={() => setOpen(false)}
-        aria-labelledby={titleId}
-        fullWidth
-        maxWidth="sm"
+        id={id}
+        label={label}
       >
-        <DialogTitle id={titleId} sx={{ typography: 'h1' }}>
-          {label}
-        </DialogTitle>
-        <DialogContent>{children}</DialogContent>
-        <DialogActions>
-          <Button onClick={() => setOpen(false)}>Close</Button>
-        </DialogActions>
-      </Dialog>
+        {children}
+      </MMDialog>
     </>
   )
 }
