@@ -3,8 +3,8 @@
 import {
   SignupFormSchema,
   LoginFormSchema,
-  FormState,
-} from "@/app/lib/definitions";
+  type FormState,
+} from "@/app/lib/form-schemas";
 import { createUser, getUserByUsername } from "@/app/lib/users";
 import bcrypt from "bcrypt";
 import { DrizzleQueryError } from "drizzle-orm/errors";

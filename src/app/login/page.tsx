@@ -1,5 +1,5 @@
 import PublicShell from "@/app/public-shell";
-import AuthForm from "@/app/auth-form";
+import AuthForm from "@/app/form/auth-form";
 
 export default function Login() {
   return (

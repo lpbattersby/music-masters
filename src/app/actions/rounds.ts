@@ -3,7 +3,7 @@
 import { getCurrentUser } from "@/app/lib/auth/dal";
 import { createRound } from "@/app/lib/rounds";
 import { getGroupById } from "@/app/lib/groups";
-import { FormState, CreateRoundFormSchema } from "@/app/lib/definitions";
+import { type FormState, CreateRoundFormSchema } from "@/app/lib/form-schemas";
 import { notFound, redirect } from "next/navigation";
 
 export async function createRoundAction(

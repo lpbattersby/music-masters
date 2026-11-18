@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { SignupFormSchema, LoginFormSchema } from "@/app/lib/definitions";
+import { SignupFormSchema, LoginFormSchema } from "@/app/lib/form-schemas";
 
 describe("SignupFormSchema", () => {
   it("accepts a valid payload", () => {

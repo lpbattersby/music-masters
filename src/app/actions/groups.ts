@@ -3,7 +3,7 @@
 import { getCurrentUser } from "@/app/lib/auth/dal";
 import { createGroup, getGroupById } from "@/app/lib/groups";
 import { createMembership } from "@/app/lib/memberships";
-import { FormState, CreateGroupFormSchema } from "@/app/lib/definitions";
+import { type FormState, CreateGroupFormSchema } from "@/app/lib/form-schemas";
 import { notFound, redirect } from "next/navigation";
 
 export async function createGroupAction(

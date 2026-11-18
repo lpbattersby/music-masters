@@ -12,7 +12,7 @@ import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
-import type { FormState } from "@/app/lib/definitions";
+import type { FormState } from "@/app/lib/form-schemas";
 
 type FormErrors = NonNullable<Exclude<FormState, undefined>["errors"]>;
 type FieldName = keyof FormErrors;

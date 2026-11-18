@@ -3,9 +3,9 @@ import { beforeEach, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import AuthForm from "./auth-form";
-import { login, signup } from "./actions/auth";
+import { login, signup } from "../actions/auth";
 
-vi.mock("./actions/auth", () => ({ login: vi.fn(), signup: vi.fn() }));
+vi.mock("../actions/auth", () => ({ login: vi.fn(), signup: vi.fn() }));
 
 beforeEach(() => vi.resetAllMocks());
 
