@@ -9,7 +9,8 @@ import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
 import {ArrowBack} from "@mui/icons-material";
-import CreateRound from "./create-round";
+import DialogButton from "@/app/dialog/dialog-button";
+import CreateRoundForm from "./round-form";
 import {RoundState, getRoundState} from "@/app/lib/helpers";
 import Button from "@mui/material/Button";
 
@@ -40,7 +41,16 @@ export default async function GroupPage({
 
                 {isMember && (
                     <>
-                        {!roundState && <CreateRound disabled={group.createdBy !== user?.userId} group={group} />}
+                        {!roundState && (
+                            <DialogButton
+                                id="create-round-dialog"
+                                name="Create Round"
+                                buttonLabel="Create round"
+                                disabled={group.createdBy !== user?.userId}
+                            >
+                                <CreateRoundForm group={group} />
+                            </DialogButton>
+                        )}
                         {roundState === RoundState.Submitting && <Button variant="contained">Submit Song</Button>}
                         {roundState === RoundState.Voting && <Button variant="contained">Vote</Button>}
                         {roundState === RoundState.Finished && <Button variant="contained">See Results</Button>}

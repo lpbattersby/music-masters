@@ -1,24 +1,9 @@
 // @vitest-environment jsdom
-import { expect, it, vi } from 'vitest'
+import { expect, it } from 'vitest'
 import { render, screen, waitFor, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import MMFab from '../fab/fab'
-import CreateRound from '../(app)/groups/[id]/create-round'
-import type { Group } from '../lib/schema'
-
-vi.mock('../(app)/groups/[id]/round-form', () => ({
-  default: () => <div>Create round form</div>,
-}))
-
-const group: Group = {
-  groupId: 'group-1',
-  name: 'Music club',
-  description: 'Our favourite tracks',
-  submissionWindowDays: 2,
-  votingWindowDays: 3,
-  createdBy: 'user-1',
-  createdAt: '2026-11-17',
-}
+import DialogButton from './dialog-button'
 
 it.each(['group', 'round'] as const)(
   'opens, closes, and reopens the create %s dialog',
@@ -30,7 +15,9 @@ it.each(['group', 'round'] as const)(
           <div>Create group form</div>
         </MMFab>
       ) : (
-        <CreateRound group={group} />
+        <DialogButton id="create-round-dialog" name="Create Round" buttonLabel="Create round">
+          <div>Create round form</div>
+        </DialogButton>
       ),
     )
 
