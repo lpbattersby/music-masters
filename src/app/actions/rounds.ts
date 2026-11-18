@@ -1,7 +1,6 @@
 'use server'
 
-import { verifySession } from "@/app/lib/auth/dal"
-import { getUserByUsername } from "@/app/lib/users"
+import { getCurrentUser } from "@/app/lib/auth/dal"
 import { createRound } from "@/app/lib/rounds"
 import { getGroupById } from "@/app/lib/groups"
 import { FormState, CreateRoundFormSchema } from "@/app/lib/definitions"
@@ -24,12 +23,7 @@ export async function createRoundAction(
         errors: validatedFields.error.flatten().fieldErrors,
       }
     }
-    const { username } = await verifySession()
-    const user = await getUserByUsername(username)
-
-    if (!user) {
-        redirect('/login')
-    }
+    const user = await getCurrentUser()
 
     const group = await getGroupById(validatedFields.data.groupId)
     if (!group || group.createdBy !== user.userId) {

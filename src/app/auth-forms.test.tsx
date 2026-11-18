@@ -2,8 +2,7 @@
 import { beforeEach, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import LoginForm from "./login/login-form";
-import SignupForm from "./signup/signup-form";
+import AuthForm from "./auth-form";
 import { login, signup } from "./actions/auth";
 
 vi.mock("./actions/auth", () => ({ login: vi.fn(), signup: vi.fn() }));
@@ -15,7 +14,7 @@ it("submits login fields and displays server validation errors", async () => {
   vi.mocked(login).mockResolvedValue({
     errors: { username: ["Unknown username"], password: ["Incorrect password"] },
   });
-  render(<LoginForm />);
+  render(<AuthForm mode="login" />);
   await event.type(screen.getByLabelText("Username"), "alice");
   await event.type(screen.getByLabelText("Password"), "incorrect");
   await event.click(screen.getByRole("button", { name: "Confirm" }));
@@ -36,7 +35,7 @@ it("submits signup fields and displays field and password validation errors", as
       password: ["Add a number", "Add a special character"],
     },
   });
-  render(<SignupForm />);
+  render(<AuthForm mode="signup" />);
   await event.type(screen.getByLabelText("Username"), "alice");
   await event.type(screen.getByLabelText("Display Name"), "A");
   await event.type(screen.getByLabelText("Password"), "password");

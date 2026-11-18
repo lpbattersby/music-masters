@@ -5,22 +5,9 @@ import { createUser, getUserByUsername } from '@/app/lib/users'
 import bcrypt from 'bcrypt'
 import { DrizzleQueryError } from 'drizzle-orm/errors'
 import { LibsqlError } from '@libsql/client'
-import { cookies } from "next/headers";
-import { getIronSession } from "iron-session";
-import { sessionOptions, defaultSession, type SessionData } from "@/app/lib/auth/session";
+import { getSession } from "@/app/lib/auth/session";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-
-async function getSession() {
-  const session = await getIronSession<SessionData>(await cookies(), sessionOptions);
-
-  if (!session.isLoggedIn) {
-    session.isLoggedIn = defaultSession.isLoggedIn;
-    session.username = defaultSession.username;
-  }
-
-  return session;
-}
 
 export async function signup(state: FormState, formData: FormData) {
   const validatedFields = SignupFormSchema.safeParse({

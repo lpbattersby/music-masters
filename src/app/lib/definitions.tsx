@@ -54,6 +54,8 @@ export type FormState =
         description?: string[]
         submissionWindowDays?: string[]
         votingWindowDays?: string[]
+        submissionDeadline?: string[]
+        votingDeadline?: string[]
         groupId?: string[]
       }
       message?: string

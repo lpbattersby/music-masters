@@ -1,10 +1,10 @@
 import PublicShell from '@/app/public-shell';
-import LoginForm from '@/app/login/login-form';
+import AuthForm from '@/app/auth-form';
 
 export default function Login() {
   return (
     <PublicShell>
-      <LoginForm />
+      <AuthForm mode="login" />
     </PublicShell>
   );
 }

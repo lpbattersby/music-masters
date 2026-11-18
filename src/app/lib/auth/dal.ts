@@ -1,12 +1,10 @@
 import "server-only";
 
 import { cache } from "react";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { connection } from "next/server"
-import { getIronSession } from "iron-session";
 
-import { sessionOptions, type SessionData } from "@/app/lib/auth/session";
+import { getSession } from "@/app/lib/auth/session";
 import { getUserByUsername } from "../users";
 import { getGroupById, isUserMemberOfGroup } from "../groups";
 import { notFound } from "next/navigation";
@@ -22,7 +20,7 @@ export const basePath = "/";
  */
 export const readSession = cache(async () => {
   await connection()
-  return getIronSession<SessionData>(await cookies(), sessionOptions);
+  return getSession();
 });
 
 /** Redirects a signed-out visitor. Call it wherever the data needs protecting. */

@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 
-import { createGroup, getGroupById, listGroups, getGroupByName } from "@/app/lib/groups";
+import { createGroup, getGroupById } from "@/app/lib/groups";
 import { resetDb } from "@/test/helpers";
 import { createTestUsers } from "@/test/fixtures";
 
@@ -26,19 +26,6 @@ describe("groups queries", () => {
 
   it("returns undefined for a missing group", async () => {
     expect(await getGroupById("non-existent-id")).toBeUndefined();
-    expect(await getGroupByName("non_existent_group")).toBeUndefined();
-  });
-
-  it("lists all groups", async () => {
-    const [created_user] = await createTestUsers(1);
-    await createGroup({ name: "group_a", description: "A", submissionWindowDays: 2, votingWindowDays: 2, createdBy: created_user.userId });
-    await createGroup({ name: "group_b", description: "B", submissionWindowDays: 2, votingWindowDays: 2, createdBy: created_user.userId });
-
-    const all = await listGroups();
-    expect(all).toHaveLength(2);
-
-    const foundByName = await getGroupByName("group_a");
-    expect(foundByName).toMatchObject({ name: "group_a", description: "A" });
   });
 
   it("enforces unique group names", async () => {

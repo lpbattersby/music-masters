@@ -1,12 +1,10 @@
 'use server'
 
-import { verifySession } from "@/app/lib/auth/dal"
-import { getUserByUsername } from "@/app/lib/users"
-import { createGroup } from "@/app/lib/groups"
+import { getCurrentUser } from "@/app/lib/auth/dal"
+import { createGroup, getGroupById } from "@/app/lib/groups"
 import { createMembership } from "@/app/lib/memberships"
 import { FormState, CreateGroupFormSchema } from "@/app/lib/definitions"
 import { notFound, redirect } from "next/navigation";
-import { getGroupById } from "@/app/lib/groups";
 
 export async function createGroupAction(
   previousState: FormState,
@@ -24,12 +22,7 @@ export async function createGroupAction(
         errors: validatedFields.error.flatten().fieldErrors,
       }
     }
-    const { username } = await verifySession()
-    const user = await getUserByUsername(username)
-
-    if (!user) {
-        redirect('/login')
-    }
+    const user = await getCurrentUser()
 
     const group = await createGroup({
         ...validatedFields.data,
@@ -45,12 +38,7 @@ export async function createGroupAction(
 }
 
 export async function joinGroupAction(formData: FormData) {
-  const { username } = await verifySession();
-  const user = await getUserByUsername(username);
-
-  if (!user) {
-    redirect("/login");
-  }
+  const user = await getCurrentUser();
 
   const groupId = formData.get("groupId");
   if (typeof groupId !== "string" || !groupId) {

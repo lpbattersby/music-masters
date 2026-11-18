@@ -3,7 +3,7 @@ import { getIronSession } from "iron-session";
 import { getUserByUsername } from "../users";
 import { getGroupById, isUserMemberOfGroup } from "../groups";
 import { getCurrentUser, getCurrentUserGroup, verifySession } from "./dal";
-import { defaultSession, sessionOptions } from "./session";
+import { defaultSession, getSession, sessionOptions } from "./session";
 
 vi.mock("server-only", () => ({}));
 vi.mock("next/headers", () => ({ cookies: vi.fn() }));
@@ -72,4 +72,17 @@ it("reads session secrets at access time and defaults to signed out", () => {
   } finally {
     vi.unstubAllEnvs();
   }
+});
+
+it("initializes signed-out session defaults", async () => {
+  const session = {
+    username: "stale",
+    isLoggedIn: false,
+    save: vi.fn(),
+    destroy: vi.fn(),
+    updateConfig: vi.fn(),
+  };
+  vi.mocked(getIronSession).mockResolvedValue(session);
+
+  expect(await getSession()).toMatchObject(defaultSession);
 });

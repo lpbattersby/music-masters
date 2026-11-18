@@ -1,12 +1,10 @@
 import { beforeEach, expect, it, vi } from 'vitest'
 import { createRoundAction } from './rounds'
-import { verifySession } from '@/app/lib/auth/dal'
-import { getUserByUsername } from '@/app/lib/users'
+import { getCurrentUser } from '@/app/lib/auth/dal'
 import { getGroupById } from '@/app/lib/groups'
 import { createRound } from '@/app/lib/rounds'
 
-vi.mock('@/app/lib/auth/dal', () => ({ verifySession: vi.fn() }))
-vi.mock('@/app/lib/users', () => ({ getUserByUsername: vi.fn() }))
+vi.mock('@/app/lib/auth/dal', () => ({ getCurrentUser: vi.fn() }))
 vi.mock('@/app/lib/groups', () => ({ getGroupById: vi.fn() }))
 vi.mock('@/app/lib/rounds', () => ({ createRound: vi.fn() }))
 vi.mock('next/navigation', () => ({
@@ -35,8 +33,7 @@ const form = () => {
 
 beforeEach(() => {
   vi.resetAllMocks()
-  vi.mocked(verifySession).mockResolvedValue({ username: user.username })
-  vi.mocked(getUserByUsername).mockResolvedValue(user)
+  vi.mocked(getCurrentUser).mockResolvedValue(user)
   vi.mocked(getGroupById).mockResolvedValue(group)
   vi.mocked(createRound).mockResolvedValue({
     ...input, roundId: 'round-1', roundNumber: 1, createdAt: 'today',
@@ -66,9 +63,10 @@ it.each(['missing', 'not-owner'])('rejects a %s group', async (kind) => {
   expect(createRound).not.toHaveBeenCalled()
 })
 
-it('redirects a missing user without inserting', async () => {
-  vi.mocked(getUserByUsername).mockResolvedValue(undefined)
-  await expect(createRoundAction(undefined, form())).rejects.toThrow('redirect:/login')
+it('does not insert when current-user lookup redirects', async () => {
+  const error = new Error('redirect:/login')
+  vi.mocked(getCurrentUser).mockRejectedValue(error)
+  await expect(createRoundAction(undefined, form())).rejects.toBe(error)
   expect(createRound).not.toHaveBeenCalled()
 })
 

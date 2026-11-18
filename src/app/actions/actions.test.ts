@@ -6,7 +6,7 @@ import { createGroupAction, joinGroupAction } from "./groups";
 import { createUser, getUserByUsername } from "@/app/lib/users";
 import { createGroup, getGroupById } from "@/app/lib/groups";
 import { createMembership } from "@/app/lib/memberships";
-import { verifySession } from "@/app/lib/auth/dal";
+import { getCurrentUser } from "@/app/lib/auth/dal";
 import { revalidatePath } from "next/cache";
 import bcrypt from "bcrypt";
 
@@ -16,7 +16,7 @@ const { session } = vi.hoisted(() => ({
 vi.mock("@/app/lib/users", () => ({ createUser: vi.fn(), getUserByUsername: vi.fn() }));
 vi.mock("@/app/lib/groups", () => ({ createGroup: vi.fn(), getGroupById: vi.fn() }));
 vi.mock("@/app/lib/memberships", () => ({ createMembership: vi.fn() }));
-vi.mock("@/app/lib/auth/dal", () => ({ verifySession: vi.fn() }));
+vi.mock("@/app/lib/auth/dal", () => ({ getCurrentUser: vi.fn() }));
 vi.mock("bcrypt", () => ({ default: { compare: vi.fn() } }));
 vi.mock("next/headers", () => ({ cookies: vi.fn() }));
 vi.mock("iron-session", () => ({ getIronSession: vi.fn(async () => session) }));
@@ -41,7 +41,7 @@ beforeEach(() => {
   session.isLoggedIn = false;
   vi.mocked(getUserByUsername).mockResolvedValue(user);
   vi.mocked(createUser).mockResolvedValue(user);
-  vi.mocked(verifySession).mockResolvedValue({ username: "alice" });
+  vi.mocked(getCurrentUser).mockResolvedValue(user);
   vi.mocked(createGroup).mockResolvedValue(group);
   vi.mocked(getGroupById).mockResolvedValue(group);
 });
@@ -116,10 +116,11 @@ describe("group actions", () => {
     expect(createMembership).toHaveBeenCalledWith({ groupId: group.groupId, userId: user.userId });
   });
 
-  it("redirects missing users for both actions without writing", async () => {
-    vi.mocked(getUserByUsername).mockResolvedValue(undefined);
-    await expect(createGroupAction(undefined, form(input))).rejects.toThrow("redirect:/login");
-    await expect(joinGroupAction(form({ groupId: "2" }))).rejects.toThrow("redirect:/login");
+  it("does not write when current-user lookup redirects", async () => {
+    const error = new Error("redirect:/login");
+    vi.mocked(getCurrentUser).mockRejectedValue(error);
+    await expect(createGroupAction(undefined, form(input))).rejects.toBe(error);
+    await expect(joinGroupAction(form({ groupId: "2" }))).rejects.toBe(error);
     expect(createMembership).not.toHaveBeenCalled();
     expect(createGroup).not.toHaveBeenCalled();
   });
