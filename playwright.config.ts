@@ -1,13 +1,13 @@
 import { defineConfig, devices } from "@playwright/test";
 
-const databaseUrl = 'file:./data/e2e.db'
-process.env.DATABASE_URL = databaseUrl
-const isCI = !!process.env.CI
+const databaseUrl = "file:./data/e2e.db";
+process.env.DATABASE_URL = databaseUrl;
+const isCI = !!process.env.CI;
 
 export default defineConfig({
   testDir: "./e2e",
   fullyParallel: false,
-  workers:1,
+  workers: 1,
   forbidOnly: !!process.env.CI,
   reporter: "list",
   use: {

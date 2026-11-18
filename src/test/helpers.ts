@@ -5,8 +5,8 @@ export async function resetDb(): Promise<void> {
   const db = await getDb();
 
   await db.transaction(async (tx) => {
-    await tx.delete(memberships)
-    await tx.delete(groups)
-    await tx.delete(users)
-  })
+    await tx.delete(memberships);
+    await tx.delete(groups);
+    await tx.delete(users);
+  });
 }

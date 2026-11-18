@@ -1,5 +1,5 @@
-import type { ReactNode } from 'react'
-import MMAppBar from '@/app/appbar/appbar'
+import type { ReactNode } from "react";
+import MMAppBar from "@/app/appbar/appbar";
 
 export default function AppLayout({ children }: { children: ReactNode }) {
   return (
@@ -7,5 +7,5 @@ export default function AppLayout({ children }: { children: ReactNode }) {
       <MMAppBar />
       {children}
     </>
-  )
+  );
 }

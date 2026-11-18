@@ -1,15 +1,15 @@
-'use client'
+"use client";
 
-import { useState, type ReactNode } from 'react'
-import Button from '@mui/material/Button'
-import MMDialog from './dialog'
+import { useState, type ReactNode } from "react";
+import Button from "@mui/material/Button";
+import MMDialog from "./dialog";
 
 interface Props {
-  id: string
-  name: string
-  children: ReactNode
-  buttonLabel?: string
-  disabled?: boolean
+  id: string;
+  name: string;
+  children: ReactNode;
+  buttonLabel?: string;
+  disabled?: boolean;
 }
 
 export default function DialogButton({
@@ -19,7 +19,7 @@ export default function DialogButton({
   buttonLabel = name,
   disabled = false,
 }: Props) {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   return (
     <>
@@ -42,5 +42,5 @@ export default function DialogButton({
         </MMDialog>
       )}
     </>
-  )
+  );
 }

@@ -12,7 +12,10 @@ beforeEach(() => vi.resetAllMocks());
 it("submits login fields and displays server validation errors", async () => {
   const event = userEvent.setup();
   vi.mocked(login).mockResolvedValue({
-    errors: { username: ["Unknown username"], password: ["Incorrect password"] },
+    errors: {
+      username: ["Unknown username"],
+      password: ["Incorrect password"],
+    },
   });
   render(<AuthForm mode="login" />);
   await event.type(screen.getByLabelText("Username"), "alice");
@@ -23,7 +26,10 @@ it("submits login fields and displays server validation errors", async () => {
   const submitted = vi.mocked(login).mock.calls[0][1];
   expect(submitted.get("username")).toBe("alice");
   expect(submitted.get("password")).toBe("incorrect");
-  expect(screen.getByLabelText("Username")).toHaveAttribute("aria-invalid", "true");
+  expect(screen.getByLabelText("Username")).toHaveAttribute(
+    "aria-invalid",
+    "true",
+  );
 });
 
 it("submits signup fields and displays field and password validation errors", async () => {
@@ -45,5 +51,9 @@ it("submits signup fields and displays field and password validation errors", as
   expect(screen.getByText("- Add a number")).toBeVisible();
   expect(screen.getByText("- Add a special character")).toBeVisible();
   const submitted = vi.mocked(signup).mock.calls[0][1];
-  expect(Object.fromEntries(submitted)).toEqual({ username: "alice", displayName: "A", password: "password" });
+  expect(Object.fromEntries(submitted)).toEqual({
+    username: "alice",
+    displayName: "A",
+    password: "password",
+  });
 });

@@ -20,14 +20,14 @@ export async function getGroupById(id: string): Promise<Group | undefined> {
 }
 
 export async function getGroupsByUserId(userId: string): Promise<Group[]> {
-  const db = await getDb()
+  const db = await getDb();
 
   return db
     .select(getTableColumns(groups))
     .from(groups)
     .innerJoin(memberships, eq(groups.groupId, memberships.groupId))
     .where(eq(memberships.userId, userId))
-    .orderBy(desc(groups.createdAt))
+    .orderBy(desc(groups.createdAt));
 }
 
 export async function isUserMemberOfGroup(
@@ -38,10 +38,9 @@ export async function isUserMemberOfGroup(
   const [membership] = await db
     .select({ userId: memberships.userId })
     .from(memberships)
-    .where(and(
-      eq(memberships.groupId, groupId),
-      eq(memberships.userId, userId),
-    ))
+    .where(
+      and(eq(memberships.groupId, groupId), eq(memberships.userId, userId)),
+    )
     .limit(1);
 
   return Boolean(membership);

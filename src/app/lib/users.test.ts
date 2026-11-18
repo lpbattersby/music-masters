@@ -10,14 +10,19 @@ describe("users queries", () => {
     const created = await createUser({
       username: "ada_username",
       displayName: "Ada",
-      password: "password"
+      password: "password",
     });
 
-    expect(created.userId).toMatch(/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i);
+    expect(created.userId).toMatch(
+      /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i,
+    );
     expect(created.createdAt).toBeTruthy();
 
     const found = await getUserByUsername("ada_username");
-    expect(found).toMatchObject({ username: "ada_username", displayName: "Ada" });
+    expect(found).toMatchObject({
+      username: "ada_username",
+      displayName: "Ada",
+    });
   });
 
   it("returns undefined for a missing user", async () => {
@@ -25,9 +30,17 @@ describe("users queries", () => {
   });
 
   it("enforces unique usernames", async () => {
-    await createUser({ username: "dup_username", displayName: "One", password: "password" });
+    await createUser({
+      username: "dup_username",
+      displayName: "One",
+      password: "password",
+    });
     await expect(
-      createUser({ username: "dup_username", displayName: "Two", password: "password" }),
+      createUser({
+        username: "dup_username",
+        displayName: "Two",
+        password: "password",
+      }),
     ).rejects.toThrow();
   });
 });

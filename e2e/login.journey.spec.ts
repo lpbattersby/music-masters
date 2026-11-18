@@ -2,9 +2,7 @@ import { expect, test, createTestUsers, testUser } from "@/test/fixtures";
 import { AxeBuilder } from "@axe-core/playwright";
 
 test.describe("login journey", () => {
-  test("a visitor can login and land on the dashboard", async ({
-    page,
-  }) => {
+  test("a visitor can login and land on the dashboard", async ({ page }) => {
     const [user] = await createTestUsers(1);
     await page.goto("/");
     await page.getByRole("link", { name: "Login" }).click();
@@ -32,7 +30,9 @@ test.describe("login journey", () => {
     await page.getByLabel("Password").fill(`${testUser.password}`);
     await page.getByRole("button", { name: "Confirm" }).click();
 
-    await expect(page).toHaveURL('/dashboard')
-    await expect(page.getByRole('heading', { name: 'Your groups.' })).toBeVisible()
+    await expect(page).toHaveURL("/dashboard");
+    await expect(
+      page.getByRole("heading", { name: "Your groups." }),
+    ).toBeVisible();
   });
 });

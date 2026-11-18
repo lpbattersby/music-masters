@@ -20,6 +20,8 @@ it("filters dashboard groups and group members by membership", async () => {
   expect(await isUserMemberOfGroup(first.groupId, member.userId)).toBe(true);
   expect(await isUserMemberOfGroup(second.groupId, member.userId)).toBe(false);
   const members = await getMembersByGroupId(first.groupId);
-  expect(members.map(({ userId }) => userId).sort()).toEqual([owner.userId, member.userId].sort());
+  expect(members.map(({ userId }) => userId).sort()).toEqual(
+    [owner.userId, member.userId].sort(),
+  );
   expect(await getMembersByGroupId("non-existent-id")).toEqual([]);
 });

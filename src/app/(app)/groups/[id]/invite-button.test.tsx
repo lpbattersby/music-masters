@@ -10,15 +10,23 @@ it("copies the current URL and allows dismissing the confirmation", async () => 
   render(<InviteButton />);
   await event.click(screen.getByRole("button", { name: "Copy invite link" }));
   expect(write).toHaveBeenCalledWith(window.location.href);
-  expect(await screen.findByRole("alert")).toHaveTextContent("Invite link copied");
+  expect(await screen.findByRole("alert")).toHaveTextContent(
+    "Invite link copied",
+  );
   await event.click(screen.getByRole("button", { name: "Close" }));
-  await waitFor(() => expect(screen.queryByRole("alert")).not.toBeInTheDocument());
+  await waitFor(() =>
+    expect(screen.queryByRole("alert")).not.toBeInTheDocument(),
+  );
 });
 
 it("reports clipboard failures with a manual fallback", async () => {
   const event = userEvent.setup();
-  vi.spyOn(navigator.clipboard, "writeText").mockRejectedValue(new Error("denied"));
+  vi.spyOn(navigator.clipboard, "writeText").mockRejectedValue(
+    new Error("denied"),
+  );
   render(<InviteButton />);
   await event.click(screen.getByRole("button", { name: "Copy invite link" }));
-  expect(await screen.findByRole("alert")).toHaveTextContent("Couldn't copy link. Please copy the page URL manually.");
+  expect(await screen.findByRole("alert")).toHaveTextContent(
+    "Couldn't copy link. Please copy the page URL manually.",
+  );
 });

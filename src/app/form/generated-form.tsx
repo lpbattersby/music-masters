@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import {
   useActionState,
@@ -6,43 +6,43 @@ import {
   type ElementType,
   type HTMLInputTypeAttribute,
   type ReactNode,
-} from 'react'
-import Alert from '@mui/material/Alert'
-import Button from '@mui/material/Button'
-import Stack from '@mui/material/Stack'
-import TextField from '@mui/material/TextField'
-import Typography from '@mui/material/Typography'
-import type { FormState } from '@/app/lib/definitions'
+} from "react";
+import Alert from "@mui/material/Alert";
+import Button from "@mui/material/Button";
+import Stack from "@mui/material/Stack";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import type { FormState } from "@/app/lib/definitions";
 
-type FormErrors = NonNullable<Exclude<FormState, undefined>['errors']>
-type FieldName = keyof FormErrors
+type FormErrors = NonNullable<Exclude<FormState, undefined>["errors"]>;
+type FieldName = keyof FormErrors;
 export type FormAction = (
   previousState: FormState,
   formData: FormData,
-) => FormState | Promise<FormState>
+) => FormState | Promise<FormState>;
 
 export interface GeneratedField {
-  name: FieldName
-  id?: string
-  label: string
-  type?: HTMLInputTypeAttribute
-  autoComplete?: string
-  endAdornment?: ReactNode
-  helperText?: (errors: string[]) => ReactNode
-  helperTextComponent?: ElementType
+  name: FieldName;
+  id?: string;
+  label: string;
+  type?: HTMLInputTypeAttribute;
+  autoComplete?: string;
+  endAdornment?: ReactNode;
+  helperText?: (errors: string[]) => ReactNode;
+  helperTextComponent?: ElementType;
 }
 
 interface Props {
-  action: FormAction
-  ariaLabel: string
-  fields: GeneratedField[]
-  initialValues?: Partial<Record<FieldName, string>>
-  hiddenFields?: { name: string; value: string }[]
-  alertErrors?: FieldName[]
-  title?: string
-  footer?: ReactNode
-  alignItems?: 'center' | 'stretch'
-  buttonFullWidth?: boolean
+  action: FormAction;
+  ariaLabel: string;
+  fields: GeneratedField[];
+  initialValues?: Partial<Record<FieldName, string>>;
+  hiddenFields?: { name: string; value: string }[];
+  alertErrors?: FieldName[];
+  title?: string;
+  footer?: ReactNode;
+  alignItems?: "center" | "stretch";
+  buttonFullWidth?: boolean;
 }
 
 export default function GeneratedForm({
@@ -57,10 +57,15 @@ export default function GeneratedForm({
   alignItems,
   buttonFullWidth = false,
 }: Props) {
-  const [state, formAction, pending] = useActionState<FormState, FormData>(action, undefined)
+  const [state, formAction, pending] = useActionState<FormState, FormData>(
+    action,
+    undefined,
+  );
   const [values, setValues] = useState<Record<string, string>>(() =>
-    Object.fromEntries(fields.map(({ name }) => [name, initialValues?.[name] ?? ''])),
-  )
+    Object.fromEntries(
+      fields.map(({ name }) => [name, initialValues?.[name] ?? ""]),
+    ),
+  );
 
   return (
     <Stack
@@ -74,14 +79,16 @@ export default function GeneratedForm({
         <input key={name} type="hidden" name={name} value={value} />
       ))}
       {alertErrors.map((name) => {
-        const errors = state?.errors?.[name]
+        const errors = state?.errors?.[name];
         return errors?.length ? (
-          <Alert key={name} severity="error">{errors.join(' ')}</Alert>
-        ) : null
+          <Alert key={name} severity="error">
+            {errors.join(" ")}
+          </Alert>
+        ) : null;
       })}
       {title && <Typography variant="h1">{title}</Typography>}
       {fields.map((field) => {
-        const errors = state?.errors?.[field.name]
+        const errors = state?.errors?.[field.name];
         return (
           <TextField
             key={field.name}
@@ -93,19 +100,26 @@ export default function GeneratedForm({
             autoComplete={field.autoComplete}
             fullWidth
             error={!!errors?.length}
-            helperText={field.helperText ? field.helperText(errors ?? []) : errors}
-            value={values[field.name] ?? ''}
+            helperText={
+              field.helperText ? field.helperText(errors ?? []) : errors
+            }
+            value={values[field.name] ?? ""}
             onChange={(event) =>
-              setValues((current) => ({ ...current, [field.name]: event.target.value }))
+              setValues((current) => ({
+                ...current,
+                [field.name]: event.target.value,
+              }))
             }
             slotProps={{
-              ...(field.endAdornment && { input: { endAdornment: field.endAdornment } }),
+              ...(field.endAdornment && {
+                input: { endAdornment: field.endAdornment },
+              }),
               ...(field.helperTextComponent && {
                 formHelperText: { component: field.helperTextComponent },
               }),
             }}
           />
-        )
+        );
       })}
       {footer}
       <Button
@@ -113,15 +127,15 @@ export default function GeneratedForm({
         type="submit"
         className="gradient-border"
         sx={{
-          borderRadius: '50px',
+          borderRadius: "50px",
           px: 5,
           py: 1.5,
-          color: 'text.primary',
-          ...(buttonFullWidth && { width: '100%' }),
+          color: "text.primary",
+          ...(buttonFullWidth && { width: "100%" }),
         }}
       >
         Confirm
       </Button>
     </Stack>
-  )
+  );
 }

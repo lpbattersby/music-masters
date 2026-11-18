@@ -2,7 +2,7 @@ import "server-only";
 
 import { cache } from "react";
 import { redirect } from "next/navigation";
-import { connection } from "next/server"
+import { connection } from "next/server";
 
 import { getSession } from "@/app/lib/auth/session";
 import { getUserByUsername } from "../users";
@@ -19,7 +19,7 @@ export const basePath = "/";
  * components ask for it.
  */
 export const readSession = cache(async () => {
-  await connection()
+  await connection();
   return getSession();
 });
 
@@ -35,19 +35,19 @@ export const verifySession = cache(async () => {
 });
 
 export const getCurrentUser = cache(async () => {
-  const { username } = await verifySession()
-  const user = await getUserByUsername(username)
+  const { username } = await verifySession();
+  const user = await getUserByUsername(username);
 
   if (!user) {
-    redirect('/login')
+    redirect("/login");
   }
 
   return {
     userId: user.userId,
     username: user.username,
     displayName: user.displayName,
-  }
-})
+  };
+});
 
 export async function getCurrentUserGroup(groupId: string) {
   const user = await getCurrentUser();

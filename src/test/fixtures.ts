@@ -1,52 +1,55 @@
-import { test as base, expect } from '@playwright/test'
-import { mkdir } from 'node:fs/promises'
-import { randomUUID } from 'node:crypto'
-import { createClient } from '@libsql/client'
-import { drizzle } from 'drizzle-orm/libsql'
-import { migrate } from 'drizzle-orm/libsql/migrator'
-import { createUser } from '@/app/lib/users'
-import { createGroup } from '@/app/lib/groups'
+import { test as base, expect } from "@playwright/test";
+import { mkdir } from "node:fs/promises";
+import { randomUUID } from "node:crypto";
+import { createClient } from "@libsql/client";
+import { drizzle } from "drizzle-orm/libsql";
+import { migrate } from "drizzle-orm/libsql/migrator";
+import { createUser } from "@/app/lib/users";
+import { createGroup } from "@/app/lib/groups";
 
 export const testUser = {
-  username: 'existing-user',
-  displayName: 'Test User',
-  password: 'TestPassword1!',
-}
+  username: "existing-user",
+  displayName: "Test User",
+  password: "TestPassword1!",
+};
 
 export const testGroup = {
-  name: 'test-group',
-  description: 'Test Group',
+  name: "test-group",
+  description: "Test Group",
   submissionWindowDays: 2,
   votingWindowDays: 2,
-}
+};
 
 export const test = base.extend<{ resetDatabase: void }>({
   resetDatabase: [
     async ({ baseURL }, use) => {
-      if (baseURL !== 'http://localhost:3001') {
-        throw new Error('Database reset requires the dedicated E2E server')
+      if (baseURL !== "http://localhost:3001") {
+        throw new Error("Database reset requires the dedicated E2E server");
       }
 
-      await mkdir('./data', { recursive: true })
-      const client = createClient({ url: 'file:./data/e2e.db' })
+      await mkdir("./data", { recursive: true });
+      const client = createClient({ url: "file:./data/e2e.db" });
 
       try {
-        await migrate(drizzle(client), { migrationsFolder: './drizzle' })
-        await client.batch([
-          'DELETE FROM rounds',
-          'DELETE FROM memberships',
-          'DELETE FROM groups',
-          'DELETE FROM users',
-        ], 'write')
+        await migrate(drizzle(client), { migrationsFolder: "./drizzle" });
+        await client.batch(
+          [
+            "DELETE FROM rounds",
+            "DELETE FROM memberships",
+            "DELETE FROM groups",
+            "DELETE FROM users",
+          ],
+          "write",
+        );
       } finally {
-        client.close()
+        client.close();
       }
 
-      await use()
+      await use();
     },
     { auto: true },
   ],
-})
+});
 
 export const createTestUsers = (count: number) =>
   Promise.all(
@@ -56,7 +59,7 @@ export const createTestUsers = (count: number) =>
         username: `${testUser.username}-${randomUUID()}`,
       }),
     ),
-  )
+  );
 
 export const createTestGroups = (count: number, createdBy: string) =>
   Promise.all(
@@ -67,6 +70,6 @@ export const createTestGroups = (count: number, createdBy: string) =>
         createdBy,
       }),
     ),
-  )
+  );
 
-export { expect }
+export { expect };

@@ -12,5 +12,7 @@ it("enforces one membership per user per group", async () => {
 
   await createMembership({ groupId: group.groupId, userId: user.userId });
 
-  await expect(createMembership({ groupId: group.groupId, userId: user.userId })).rejects.toThrow();
+  await expect(
+    createMembership({ groupId: group.groupId, userId: user.userId }),
+  ).rejects.toThrow();
 });
