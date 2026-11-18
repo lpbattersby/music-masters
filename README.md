@@ -42,6 +42,14 @@ npm -v # Should print "11.19.1".
 npm install
 ```
 
+### Add a `.env` file
+
+Copy the `.env.example` file to `.env` in the same location adding a random long set of numbers, eg:
+
+```
+SESSION_PASSWORD=123456789012233409834987519034564813765891354
+```
+
 ### Run the development server:
 
 ```bash
