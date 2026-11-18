@@ -33,6 +33,7 @@ export const test = base.extend<{ resetDatabase: void }>({
       try {
         await migrate(drizzle(client), { migrationsFolder: './drizzle' })
         await client.batch([
+          'DELETE FROM rounds',
           'DELETE FROM memberships',
           'DELETE FROM groups',
           'DELETE FROM users',

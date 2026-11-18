@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Alert from '@mui/material/Alert';
 import { Group } from '@/app/lib/schema';
-import findDeadline from '@/app/lib/helpers';
+import { findDeadline } from '@/app/lib/helpers';
 
 export default function CreateRoundForm({ group }: { group: Group }) {
   const [state, action, pending] = useActionState(createRoundAction, undefined)

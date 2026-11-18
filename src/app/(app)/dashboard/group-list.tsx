@@ -1,6 +1,6 @@
 'use client'
 
-import { Group } from '@/app/lib/schema'
+import type { Group, Round } from '@/app/lib/schema'
 import Link from 'next/link'
 import { ArrowForward, AlbumOutlined } from '@mui/icons-material'
 import Card from '@mui/material/Card'
@@ -9,7 +9,9 @@ import CardContent from '@mui/material/CardContent'
 import Paper from '@mui/material/Paper'
 import Typography from '@mui/material/Typography'
 
-export default function GroupList({ groups }: { groups: Group[] }) {
+type GroupWithLatestRound = Group & { latestRound?: Round }
+
+export default function GroupList({ groups }: { groups: GroupWithLatestRound[] }) {
   if (groups.length === 0) {
     return (
       <Paper variant="outlined" sx={{ mt: 4, px: 3, py: 6, textAlign: 'center', color: 'info.main', borderStyle: 'dashed', bgcolor: 'transparent' }}>
@@ -32,9 +34,14 @@ export default function GroupList({ groups }: { groups: Group[] }) {
           </div>
           <CardContent sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 2 }}>
             <div className="min-w-0">
-              <Typography variant="h3" component="h3">Pop Songs</Typography>
-              <Typography variant="body2" color="text.secondary" className="line-clamp-2">
-                Description of the current round...</Typography>
+              <Typography variant="h3" component="h3">
+                {group.latestRound?.name ?? 'No round yet.'}
+              </Typography>
+              {group.latestRound && (
+                <Typography variant="body2" color="text.secondary" className="line-clamp-2">
+                  {group.latestRound.description}
+                </Typography>
+              )}
             </div>
             <ArrowForward aria-hidden="true" sx={{ color: 'primary.main', flexShrink: 0 }} />
           </CardContent>

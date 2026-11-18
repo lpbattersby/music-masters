@@ -1,4 +1,6 @@
-export default function findDeadline(days: number, from = new Date()): string {
+import {Round} from "@/app/lib/schema";
+
+export function findDeadline(days: number, from = new Date()): string {
   if (!Number.isInteger(days) || days <= 0) {
     throw new Error('Days must be a positive integer')
   }
@@ -11,4 +13,28 @@ export default function findDeadline(days: number, from = new Date()): string {
   const day = String(date.getDate()).padStart(2, '0')
 
   return `${year}-${month}-${day}`
+}
+
+export enum RoundState {
+  Submitting = "Submitting",
+  Voting = "Voting",
+  Finished = "Finished"
+}
+
+export function getRoundState(round: Round) : RoundState {
+  const now = new Date();
+  const submissionDeadline = new Date(round.submissionDeadline);
+  const votingDeadline = new Date(round.votingDeadline);
+
+  if (now < submissionDeadline) {
+    return RoundState.Submitting
+  }
+
+  if (submissionDeadline < now && now < votingDeadline) {
+    return RoundState.Voting
+  }
+
+  else {
+    return RoundState.Finished
+  }
 }
