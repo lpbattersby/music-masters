@@ -46,5 +46,5 @@ Music Masters is a Next.js App Router application for groups to run music-submis
 - `npm run lint`: ESLint and Prettier check.
 - `npm run format`: format the repository with Prettier.
 - `npm test`: unit tests; `npm run test:e2e`: Playwright journeys.
-- `npm exec -- tsc --noEmit`: TypeScript check.
+- `npm run typecheck`: TypeScript check.
 - `npm run db:generate` and `npm run db:migrate`: generate and apply Drizzle migrations.
