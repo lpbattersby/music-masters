@@ -11,15 +11,17 @@ export async function createRound(input: {
 }): Promise<Round> {
   const db = await getDb();
 
-  const [round] = await db
-    .insert(rounds)
-    .values({
-      ...input,
-      roundNumber: sql<number>`(SELECT COALESCE(MAX("round_number"), 0) + 1
-                                      FROM "rounds"
-                                      WHERE "group_id" = ${input.groupId})`,
-    })
-    .returning();
+  const [round] = await db.transaction(async (tx) => {
+    return tx
+      .insert(rounds)
+      .values({
+        ...input,
+        roundNumber: sql<number>`(SELECT COALESCE(MAX("round_number"), 0) + 1
+                                       FROM "rounds"
+                                       WHERE "group_id" = ${input.groupId})`,
+      })
+      .returning();
+  });
 
   return round;
 }

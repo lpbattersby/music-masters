@@ -28,6 +28,9 @@ export default function SoundCloudPlayer({ id, url }: Props) {
     let cancelled = false;
 
     async function loadPlayer() {
+      const controller = new AbortController();
+      const timeoutId = window.setTimeout(() => controller.abort(), 10000);
+
       try {
         setLoading(true);
         setError("");
@@ -40,7 +43,9 @@ export default function SoundCloudPlayer({ id, url }: Props) {
         endpoint.searchParams.set("maxwidth", "600");
         endpoint.searchParams.set("color", "A78BFA");
 
-        const response = await fetch(endpoint.toString());
+        const response = await fetch(endpoint.toString(), {
+          signal: controller.signal,
+        });
 
         if (!response.ok) {
           throw new Error("SoundCloud could not generate this player.");
@@ -78,7 +83,12 @@ export default function SoundCloudPlayer({ id, url }: Props) {
           setEmbedUrl(playerUrl.href);
         }
       } catch (err) {
-        if (!cancelled) {
+        if (cancelled) {
+          return;
+        }
+        if (err instanceof DOMException && err.name === "AbortError") {
+          setError("The SoundCloud player took too long to load.");
+        } else {
           setError(
             err instanceof Error
               ? err.message
@@ -86,6 +96,7 @@ export default function SoundCloudPlayer({ id, url }: Props) {
           );
         }
       } finally {
+        window.clearTimeout(timeoutId);
         if (!cancelled) {
           setLoading(false);
         }
