@@ -6,6 +6,7 @@ import { drizzle } from "drizzle-orm/libsql";
 import { migrate } from "drizzle-orm/libsql/migrator";
 import { createUser } from "@/app/lib/users";
 import { createGroup } from "@/app/lib/groups";
+import { createRound } from "@/app/lib/rounds";
 
 export const testUser = {
   username: "existing-user",
@@ -61,15 +62,35 @@ export const createTestUsers = (count: number) =>
     ),
   );
 
-export const createTestGroups = (count: number, createdBy: string) =>
+export const createTestGroups = (count: number, createdBy?: string) =>
   Promise.all(
-    Array.from({ length: count }, () =>
-      createGroup({
+    Array.from({ length: count }, async () => {
+      const creatorId = createdBy ?? (await createUser(testUser)).userId;
+      return createGroup({
         ...testGroup,
         name: `${testGroup.name}-${randomUUID()}`,
-        createdBy,
-      }),
-    ),
+        createdBy: creatorId,
+      });
+    }),
+  );
+
+export const createTestRounds = (count: number, groupId: string) =>
+  Promise.all(
+    Array.from({ length: count }, async () => {
+      const today = new Date().toISOString().slice(0, 10);
+      const dayFromToday = (days: number) => {
+        const date = new Date(`${today}T00:00:00.000Z`);
+        date.setUTCDate(date.getUTCDate() + days);
+        return date.toISOString().slice(0, 10);
+      };
+      return createRound({
+        name: `Round ${randomUUID().slice(0, 8)}`,
+        groupId,
+        description: "Test round",
+        submissionDeadline: dayFromToday(3),
+        votingDeadline: dayFromToday(7),
+      });
+    }),
   );
 
 export { expect };

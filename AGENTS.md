@@ -30,7 +30,12 @@ Music Masters is a Next.js App Router application for groups to run music-submis
 - Round numbers are per group; `createRound` calculates the next number, and the database enforces uniqueness per group. Voting deadlines must be after submission deadlines.
 - Deadlines use ISO date strings (`YYYY-MM-DD`). When implementing deadline-sensitive behavior, use trusted server time, never the client clock; see the planned behavior below.
 - Dashboard latest-round data is fetched in one grouped query for all groups; do not add per-group round queries in a loop.
+- Song submissions are unique per user and round; update the existing row when a member replaces their song.
 - E2E database cleanup must delete dependent rows first: rounds, memberships, groups, then users. The fixture uses a dedicated E2E database.
+
+## Implemented round behavior
+
+- Group members can submit a SoundCloud URL for the current round and replace it until the submission deadline. Deadline dates are inclusive through the selected UTC day.
 
 ## Planned round behavior
 
@@ -38,7 +43,7 @@ Music Masters is a Next.js App Router application for groups to run music-submis
 - The next round's creator/chooser is not decided yet. The intended options are random selection or letting the previous winner/loser choose who picks the next creator; do not assume which policy until clarified.
 - The round creator can select any number of voting categories from Theme, Song, and Fun. Players rank submitted songs from best to worst with a drag-and-swap UI; persist each rank explicitly.
 - A player who did not submit a song cannot vote, but can still listen. Exclude non-voters from the round's ranking calculations when it ends.
-- Initially, players submit songs by pasting a SoundCloud link. Search may be added later. The voting view should include an embedded SoundCloud playlist player so players can listen in the app.
+- Song search may be added later. The voting view should include an embedded SoundCloud playlist player so players can listen in the app.
 - On the results view, show Create Next Round to whoever is eligible to choose the next round. Once a new round starts, keep prior results accessible from Past Rounds.
 
 ## Useful commands

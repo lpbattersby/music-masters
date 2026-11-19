@@ -4,7 +4,7 @@
 
 Music Masters is a group game built around themed music rounds: players submit songs and vote on each other's picks.
 
-> **Status:** Early development. Users can create accounts, create and join groups via invite links, and create rounds with submission and voting deadlines. Song submission, voting, and results are not implemented yet.
+> **Status:** Early development. Users can create accounts, create and join groups via invite links, create rounds with submission and voting deadlines, and submit or replace a SoundCloud song URL until the submission deadline. Voting and results are not implemented yet.
 
 ## Requirements
 

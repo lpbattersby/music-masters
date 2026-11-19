@@ -1,6 +1,7 @@
 import { and, desc, eq, getTableColumns } from "drizzle-orm";
 import { getDb } from "@/app/lib/db";
 import { groups, memberships, type Group } from "@/app/lib/schema";
+import { v4 as uuidv4 } from "uuid";
 
 export async function createGroup(input: {
   name: string;
@@ -10,7 +11,8 @@ export async function createGroup(input: {
   createdBy: string;
 }): Promise<Group> {
   const db = await getDb();
-  const [group] = await db.insert(groups).values(input).returning();
+  const groupInput = { ...input, groupId: uuidv4() };
+  const [group] = await db.insert(groups).values(groupInput).returning();
   return group;
 }
 

@@ -21,18 +21,16 @@ export enum RoundState {
   Finished = "Finished",
 }
 
-export function getRoundState(round: Round): RoundState {
-  const now = new Date();
-  const submissionDeadline = new Date(round.submissionDeadline);
-  const votingDeadline = new Date(round.votingDeadline);
+export function getRoundState(round: Round, now = new Date()): RoundState {
+  const today = now.toISOString().slice(0, 10);
 
-  if (now < submissionDeadline) {
+  if (today <= round.submissionDeadline) {
     return RoundState.Submitting;
   }
 
-  if (submissionDeadline < now && now < votingDeadline) {
+  if (today <= round.votingDeadline) {
     return RoundState.Voting;
-  } else {
-    return RoundState.Finished;
   }
+
+  return RoundState.Finished;
 }

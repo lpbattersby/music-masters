@@ -30,6 +30,7 @@ export interface GeneratedField {
   endAdornment?: ReactNode;
   helperText?: (errors: string[]) => ReactNode;
   helperTextComponent?: ElementType;
+  onChange?: (value: string) => void;
 }
 
 interface Props {
@@ -104,12 +105,13 @@ export default function GeneratedForm({
               field.helperText ? field.helperText(errors ?? []) : errors
             }
             value={values[field.name] ?? ""}
-            onChange={(event) =>
+            onChange={(event) => {
               setValues((current) => ({
                 ...current,
                 [field.name]: event.target.value,
-              }))
-            }
+              }));
+              field.onChange?.(event.target.value);
+            }}
             slotProps={{
               ...(field.endAdornment && {
                 input: { endAdornment: field.endAdornment },

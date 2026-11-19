@@ -1,6 +1,7 @@
 import { getCurrentUser, getCurrentUserGroup } from "@/app/lib/auth/dal";
 import { getMembersByGroupId } from "@/app/lib/users";
 import { getRoundsByGroupId } from "@/app/lib/rounds";
+import { getSongSubmissionByRoundAndUser } from "@/app/lib/submissions";
 import GroupInfo from "./group-info";
 import Link from "next/link";
 import Paper from "@mui/material/Paper";
@@ -11,6 +12,7 @@ import ListItemText from "@mui/material/ListItemText";
 import { ArrowBack } from "@mui/icons-material";
 import DialogButton from "@/app/dialog/dialog-button";
 import CreateRoundForm from "./round-form";
+import SongSubmissionForm from "./song-submission-form";
 import { RoundState, getRoundState } from "@/app/lib/helpers";
 import Button from "@mui/material/Button";
 
@@ -30,6 +32,10 @@ export default async function GroupPage({
   const roundState: RoundState | undefined = latestRound
     ? getRoundState(latestRound)
     : undefined;
+  const songSubmission =
+    latestRound && isMember && roundState === RoundState.Submitting
+      ? await getSongSubmissionByRoundAndUser(latestRound.roundId, user.userId)
+      : undefined;
 
   return (
     <main className="app-content flex flex-col gap-6">
@@ -66,8 +72,17 @@ export default async function GroupPage({
                 <CreateRoundForm group={group} />
               </DialogButton>
             )}
-            {roundState === RoundState.Submitting && (
-              <Button variant="contained">Submit Song</Button>
+            {roundState === RoundState.Submitting && latestRound && (
+              <DialogButton
+                id={`submit-song-dialog-${latestRound.roundId}`}
+                name={songSubmission ? "Replace Song" : "Submit Song"}
+                buttonLabel={songSubmission ? "Replace Song" : "Submit Song"}
+              >
+                <SongSubmissionForm
+                  roundId={latestRound.roundId}
+                  initialSongUrl={songSubmission?.songUrl}
+                />
+              </DialogButton>
             )}
             {roundState === RoundState.Voting && (
               <Button variant="contained">Vote</Button>

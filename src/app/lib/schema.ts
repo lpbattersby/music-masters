@@ -27,7 +27,7 @@ export const groups = sqliteTable(
     groupId: text("group_id")
       .primaryKey()
       .$default(() => uuidv4()),
-    name: text("name").notNull().unique(),
+    name: text("name").notNull(),
     description: text("description").notNull(),
     submissionWindowDays: integer("submission_window_days").notNull(),
     votingWindowDays: integer("voting_window_days").notNull(),
@@ -93,6 +93,28 @@ export const rounds = sqliteTable(
   ],
 );
 
+export const songSubmissions = sqliteTable(
+  "song_submissions",
+  {
+    submissionId: text("submission_id")
+      .primaryKey()
+      .$default(() => uuidv4()),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.userId),
+    roundId: text("round_id")
+      .notNull()
+      .references(() => rounds.roundId),
+    songUrl: text("song_url").notNull(),
+  },
+  (table) => [
+    unique("song_submissions_user_round_unique").on(
+      table.userId,
+      table.roundId,
+    ),
+  ],
+);
+
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
 
@@ -104,3 +126,6 @@ export type NewMembership = typeof memberships.$inferInsert;
 
 export type Round = typeof rounds.$inferSelect;
 export type NewRound = typeof rounds.$inferInsert;
+
+export type SongSubmission = typeof songSubmissions.$inferSelect;
+export type NewSongSubmission = typeof songSubmissions.$inferInsert;

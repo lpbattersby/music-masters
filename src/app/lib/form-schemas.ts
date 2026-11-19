@@ -68,6 +68,8 @@ export type FormState =
         submissionDeadline?: string[];
         votingDeadline?: string[];
         groupId?: string[];
+        songUrl?: string[];
+        roundId?: string[];
       };
       message?: string;
     }
@@ -109,3 +111,29 @@ export const CreateRoundFormSchema = z
   });
 
 export type CreateRoundInput = z.infer<typeof CreateRoundFormSchema>;
+
+export const SubmitSongFormSchema = z.object({
+  roundId: z.uuid({ error: "A valid round is required." }),
+  songUrl: z
+    .string()
+    .trim()
+    .pipe(
+      z.url({ error: "Enter a valid URL." }).refine(
+        (value) => {
+          if (!URL.canParse(value)) {
+            return false;
+          }
+
+          const url = new URL(value);
+          return (
+            url.protocol === "https:" &&
+            (url.hostname === "soundcloud.com" ||
+              url.hostname.endsWith(".soundcloud.com"))
+          );
+        },
+        { error: "Enter a secure SoundCloud URL." },
+      ),
+    ),
+});
+
+export type SubmitSongInput = z.infer<typeof SubmitSongFormSchema>;

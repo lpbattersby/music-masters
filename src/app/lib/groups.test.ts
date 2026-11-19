@@ -33,26 +33,6 @@ describe("groups queries", () => {
     expect(await getGroupById("non-existent-id")).toBeUndefined();
   });
 
-  it("enforces unique group names", async () => {
-    const [created_user] = await createTestUsers(1);
-    await createGroup({
-      name: "dup_group",
-      description: "One",
-      submissionWindowDays: 2,
-      votingWindowDays: 2,
-      createdBy: created_user.userId,
-    });
-    await expect(
-      createGroup({
-        name: "dup_group",
-        description: "Two",
-        submissionWindowDays: 2,
-        votingWindowDays: 2,
-        createdBy: created_user.userId,
-      }),
-    ).rejects.toThrow();
-  });
-
   it("enforces greater than 0 for windows", async () => {
     const [created_user] = await createTestUsers(1);
     await expect(

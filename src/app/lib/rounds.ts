@@ -34,6 +34,13 @@ export async function getRoundsByGroupId(groupId: string): Promise<Round[]> {
     .orderBy(desc(rounds.roundNumber));
 }
 
+export async function getRoundById(
+  roundId: string,
+): Promise<Round | undefined> {
+  const db = await getDb();
+  return db.query.rounds.findFirst({ where: eq(rounds.roundId, roundId) });
+}
+
 export async function getLatestRoundsByGroupIds(
   groupIds: string[],
 ): Promise<Round[]> {
