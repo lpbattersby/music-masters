@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemText from "@mui/material/ListItemText";
-import { ArrowBack } from "@mui/icons-material";
+import { ArrowBack, HowToVote, Flag } from "@mui/icons-material";
 import DialogButton from "@/app/dialog/dialog-button";
 import CreateRoundForm from "./round-form";
 import SongSubmissionForm from "./song-submission-form";
@@ -85,10 +85,14 @@ export default async function GroupPage({
               </DialogButton>
             )}
             {roundState === RoundState.Voting && (
-              <Button variant="contained">Vote</Button>
+              <Button variant="contained" startIcon={<HowToVote />}>
+                Vote
+              </Button>
             )}
             {roundState === RoundState.Finished && (
-              <Button variant="contained">See Results</Button>
+              <Button variant="contained" startIcon={<Flag />}>
+                See Results
+              </Button>
             )}
           </>
         )}
