@@ -41,7 +41,7 @@ vi.stubGlobal(
     const pathSegments = trackUrl.replace(/^https?:\/\/[^/]+\//, "").split("/");
     const isArtistPage = pathSegments.length === 1; // only one path segment = artist
     const apiType = isArtistPage ? "users" : "tracks";
-    const apiId = isArtistPage ? pathSegments[0] : pathSegments.at(-1) ?? "1";
+    const apiId = isArtistPage ? pathSegments[0] : (pathSegments.at(-1) ?? "1");
     const apiUrl = `https://api.soundcloud.com/${apiType}/${apiId}`;
     return new Response(
       JSON.stringify({
