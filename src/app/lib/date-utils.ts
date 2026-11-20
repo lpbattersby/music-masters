@@ -11,8 +11,6 @@ export function formatDeadlineDate(
   options?: Intl.DateTimeFormatOptions,
 ): string {
   const [year, month, day] = date.split("-").map(Number);
-  // Use local-time construction so we don't shift the calendar date by the
-  // viewer's offset. The date is already UTC-only (no time component).
   const d = new Date(year, month - 1, day);
   return d.toLocaleDateString(
     undefined,
@@ -21,20 +19,10 @@ export function formatDeadlineDate(
 }
 
 /**
- * Formats the time remaining until a date-only deadline as a short relative
- * label: minutes (< 1 h), hours (< 24 h), or days (>= 24 h).
- *
- * Deadlines are stored as UTC dates (`YYYY-MM-DD`) and are inclusive through
- * the end of that UTC day, so we measure to 23:59:59.999 **UTC** on the
- * deadline day. This keeps the countdown consistent regardless of the
- * viewer's local timezone.
- *
- * Returns a string like "45 minutes", "3 hours", or "2 days".
- *
- * The countdown always rounds **up** (ceiling) so a user never sees less time
- * than is actually left (e.g. 59 m 59 s renders as "1 hour", and a sub-minute
- * remainder renders as "1 minute"). For an already-passed deadline the
- * remaining time clamps to zero and renders "0 minutes".
+ * Deadlines are stored as UTC dates and are inclusive through the end of that
+ * UTC day, so the countdown is measured to 23:59:59.999 UTC on the deadline
+ * day. Each unit rounds up (ceil), so a user never sees less time than is
+ * actually left; a past deadline clamps to zero and renders "0 minutes".
  */
 export function formatRelativeTime(date: string): string {
   const [year, month, day] = date.split("-").map(Number);

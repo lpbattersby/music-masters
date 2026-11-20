@@ -14,8 +14,6 @@ export default function SongSubmissionForm({
   roundId: string;
   initialSongUrl?: string;
 }) {
-  // inputValue drives the text field; previewUrl drives the player.
-  // The debounce keeps the player from re-fetching on every keystroke.
   const [inputValue, setInputValue] = useState<string>(initialSongUrl ?? "");
   const [previewUrl, setPreviewUrl] = useState<string>(initialSongUrl ?? "");
   const debounceTimer = useRef<ReturnType<typeof setTimeout> | null>(null);

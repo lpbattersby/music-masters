@@ -18,8 +18,6 @@ interface Props {
 }
 
 export default function SoundCloudPlayer({ id, url }: Props) {
-  // embedUrl persists across re-fetches so the old iframe stays visible
-  // while a new one is loading.
   const [embedUrl, setEmbedUrl] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
