@@ -29,23 +29,21 @@ export function formatDeadlineDate(
  * deadline day. This keeps the countdown consistent regardless of the
  * viewer's local timezone.
  *
- * Returns a string like "45 minutes", "3 hours", or "2 days". For deadlines
- * that are already past, returns "under a minute" so the UI still renders
- * something meaningful while the server hasn't advanced the round state yet.
+ * Returns a string like "45 minutes", "3 hours", or "2 days".
  *
- * The countdown is rounded to the nearest hour or day (e.g. "due in 3h 59m"
- * renders as "4 hours", not the misleading "3 hours"). Minutes are always
- * floored so we never claim more time is left than there actually is.
+ * The countdown always rounds **up** (ceiling) so a user never sees less time
+ * than is actually left (e.g. 59 m 59 s renders as "1 hour", and a sub-minute
+ * remainder renders as "1 minute"). For an already-passed deadline the
+ * remaining time clamps to zero and renders "0 minutes".
  */
 export function formatRelativeTime(date: string): string {
   const [year, month, day] = date.split("-").map(Number);
   const deadlineEnd = Date.UTC(year, month - 1, day, 23, 59, 59, 999);
   const remainingMs = Math.max(0, deadlineEnd - Date.now());
-  const minutes = Math.floor(remainingMs / 60000);
-  const hours = Math.round(minutes / 60);
-  const days = Math.round(hours / 24);
+  const minutes = Math.ceil(remainingMs / 60_000);
+  const hours = Math.ceil(remainingMs / 3_600_000);
+  const days = Math.ceil(remainingMs / 86_400_000);
 
-  if (minutes < 1) return "under a minute";
   if (minutes < 60) return `${minutes} ${minutes === 1 ? "minute" : "minutes"}`;
   if (hours < 24) return `${hours} ${hours === 1 ? "hour" : "hours"}`;
   return `${days} ${days === 1 ? "day" : "days"}`;

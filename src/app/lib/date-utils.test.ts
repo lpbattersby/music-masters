@@ -52,37 +52,40 @@ describe("formatRelativeTime", () => {
     vi.useRealTimers();
   });
 
-  it("renders minutes below one hour", () => {
-    // 23:30 UTC → 29 min 59 s before end-of-day UTC (23:59:59.999) → "29 minutes".
+  it("rounds up minutes below one hour", () => {
+    // 23:30 UTC → 29 min 59 s before end-of-day UTC (23:59:59.999) → "30 minutes".
     vi.setSystemTime(new Date("2025-06-15T23:30:00.000Z"));
-    expect(formatRelativeTime("2025-06-15")).toBe("29 minutes");
-    // 23:58:30 UTC → 1 min 29 s before end-of-day → "1 minute".
+    expect(formatRelativeTime("2025-06-15")).toBe("30 minutes");
+    // 23:58:30 UTC → 1 min 29 s before end-of-day → "2 minutes".
     vi.setSystemTime(new Date("2025-06-15T23:58:30.000Z"));
+    expect(formatRelativeTime("2025-06-15")).toBe("2 minutes");
+    // 23:59:59 UTC → 59 s before end-of-day → "1 minute".
+    vi.setSystemTime(new Date("2025-06-15T23:59:59.000Z"));
     expect(formatRelativeTime("2025-06-15")).toBe("1 minute");
   });
 
-  it("renders hours below one day", () => {
-    // 20:00 UTC → 3 h 59 m 59 s before end-of-day → rounds to "4 hours".
-    vi.setSystemTime(new Date("2025-06-15T20:00:00.000Z"));
-    expect(formatRelativeTime("2025-06-15")).toBe("4 hours");
-    // 23:00 UTC → 59 min 59 s left → "59 minutes".
+  it("rounds up hours below one day", () => {
+    // 19:00 UTC → 4 h 59 m 59 s before end-of-day → rounds up to "5 hours".
+    vi.setSystemTime(new Date("2025-06-15T19:00:00.000Z"));
+    expect(formatRelativeTime("2025-06-15")).toBe("5 hours");
+    // 18:00 UTC → exactly 6 h left → "6 hours".
+    vi.setSystemTime(new Date("2025-06-15T18:00:00.000Z"));
+    expect(formatRelativeTime("2025-06-15")).toBe("6 hours");
+    // 23:00 UTC → 59 min 59 s left → rounds up to "1 hour".
     vi.setSystemTime(new Date("2025-06-15T23:00:00.000Z"));
-    expect(formatRelativeTime("2025-06-15")).toBe("59 minutes");
-    // 22:59:59 UTC → exactly 60 min left → rounds to "1 hour".
-    vi.setSystemTime(new Date("2025-06-15T22:59:59.000Z"));
     expect(formatRelativeTime("2025-06-15")).toBe("1 hour");
   });
 
-  it("renders days at one or more full days", () => {
-    // From 23:00 UTC on day N, day N+1's end-of-day is ~25 h → "1 day";
-    // day N+2's end-of-day is ~49 h → "2 days".
+  it("rounds up days", () => {
+    // From 23:00 UTC on day N, day N+1's end-of-day is ~25 h 59 m → "2 days";
+    // day N+2's end-of-day is ~49 h 59 m → "3 days".
     vi.setSystemTime(new Date("2025-06-15T23:00:00.000Z"));
-    expect(formatRelativeTime("2025-06-16")).toBe("1 day");
-    expect(formatRelativeTime("2025-06-17")).toBe("2 days");
+    expect(formatRelativeTime("2025-06-16")).toBe("2 days");
+    expect(formatRelativeTime("2025-06-17")).toBe("3 days");
   });
 
-  it("renders 'under a minute' for an already-passed deadline", () => {
+  it("renders 0 minutes for an already-passed deadline", () => {
     vi.setSystemTime(new Date("2025-06-16T00:00:00.000Z"));
-    expect(formatRelativeTime("2025-06-15")).toBe("under a minute");
+    expect(formatRelativeTime("2025-06-15")).toBe("0 minutes");
   });
 });
