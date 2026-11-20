@@ -1,12 +1,10 @@
 import "server-only";
 
 import { cache } from "react";
-import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import { connection } from "next/server"
-import { getIronSession } from "iron-session";
+import { connection } from "next/server";
 
-import { sessionOptions, type SessionData } from "@/app/lib/auth/session";
+import { getSession } from "@/app/lib/auth/session";
 import { getUserByUsername } from "../users";
 import { getGroupById, isUserMemberOfGroup } from "../groups";
 import { notFound } from "next/navigation";
@@ -21,8 +19,8 @@ export const basePath = "/";
  * components ask for it.
  */
 export const readSession = cache(async () => {
-  await connection()
-  return getIronSession<SessionData>(await cookies(), sessionOptions);
+  await connection();
+  return getSession();
 });
 
 /** Redirects a signed-out visitor. Call it wherever the data needs protecting. */
@@ -37,19 +35,19 @@ export const verifySession = cache(async () => {
 });
 
 export const getCurrentUser = cache(async () => {
-  const { username } = await verifySession()
-  const user = await getUserByUsername(username)
+  const { username } = await verifySession();
+  const user = await getUserByUsername(username);
 
   if (!user) {
-    redirect('/login')
+    redirect("/login");
   }
 
   return {
     userId: user.userId,
     username: user.username,
     displayName: user.displayName,
-  }
-})
+  };
+});
 
 export async function getCurrentUserGroup(groupId: string) {
   const user = await getCurrentUser();

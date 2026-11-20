@@ -1,4 +1,5 @@
-import type { SessionOptions } from "iron-session";
+import { getIronSession, type SessionOptions } from "iron-session";
+import { cookies } from "next/headers";
 
 export interface SessionData {
   username: string;
@@ -24,6 +25,16 @@ export const sessionOptions: SessionOptions = {
   },
 };
 
-export function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
+export async function getSession() {
+  const session = await getIronSession<SessionData>(
+    await cookies(),
+    sessionOptions,
+  );
+
+  if (!session.isLoggedIn) {
+    session.isLoggedIn = defaultSession.isLoggedIn;
+    session.username = defaultSession.username;
+  }
+
+  return session;
 }

@@ -61,9 +61,7 @@
       "indexes": {
         "groups_name_unique": {
           "name": "groups_name_unique",
-          "columns": [
-            "name"
-          ],
+          "columns": ["name"],
           "isUnique": true
         }
       },
@@ -72,12 +70,8 @@
           "name": "groups_created_by_users_user_id_fk",
           "tableFrom": "groups",
           "tableTo": "users",
-          "columnsFrom": [
-            "created_by"
-          ],
-          "columnsTo": [
-            "user_id"
-          ],
+          "columnsFrom": ["created_by"],
+          "columnsTo": ["user_id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
@@ -135,12 +129,8 @@
           "name": "memberships_group_id_groups_group_id_fk",
           "tableFrom": "memberships",
           "tableTo": "groups",
-          "columnsFrom": [
-            "group_id"
-          ],
-          "columnsTo": [
-            "group_id"
-          ],
+          "columnsFrom": ["group_id"],
+          "columnsTo": ["group_id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
@@ -148,22 +138,15 @@
           "name": "memberships_user_id_users_user_id_fk",
           "tableFrom": "memberships",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "user_id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["user_id"],
           "onDelete": "no action",
           "onUpdate": "no action"
         }
       },
       "compositePrimaryKeys": {
         "memberships_group_id_user_id_pk": {
-          "columns": [
-            "group_id",
-            "user_id"
-          ],
+          "columns": ["group_id", "user_id"],
           "name": "memberships_group_id_user_id_pk"
         }
       },
@@ -222,9 +205,7 @@
       "indexes": {
         "users_username_unique": {
           "name": "users_username_unique",
-          "columns": [
-            "username"
-          ],
+          "columns": ["username"],
           "isUnique": true
         }
       },

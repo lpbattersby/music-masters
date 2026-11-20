@@ -1,13 +1,13 @@
 import { describe, expect, it } from "vitest";
 
-import { SignupFormSchema, LoginFormSchema } from "@/app/lib/definitions";
+import { SignupFormSchema, LoginFormSchema } from "@/app/lib/form-schemas";
 
 describe("SignupFormSchema", () => {
   it("accepts a valid payload", () => {
     const result = SignupFormSchema.safeParse({
       username: "ada_username",
       displayName: "Ada",
-      password: "abcdefg1234!"
+      password: "abcdefg1234!",
     });
     expect(result.success).toBe(true);
   });
@@ -16,7 +16,7 @@ describe("SignupFormSchema", () => {
     const result = SignupFormSchema.safeParse({
       username: "n",
       displayName: "Ada",
-      password: "abcdefg1234!"
+      password: "abcdefg1234!",
     });
     expect(result.success).toBe(false);
   });
@@ -25,7 +25,7 @@ describe("SignupFormSchema", () => {
     const result = SignupFormSchema.safeParse({
       username: "ada_username",
       displayName: "   ",
-      password: "abcdefg1234!"
+      password: "abcdefg1234!",
     });
     expect(result.success).toBe(false);
   });
@@ -34,7 +34,7 @@ describe("SignupFormSchema", () => {
     const result = SignupFormSchema.safeParse({
       username: "ada_username",
       displayName: "Ada",
-      password: "short"
+      password: "short",
     });
     expect(result.success).toBe(false);
   });
@@ -42,7 +42,7 @@ describe("SignupFormSchema", () => {
   it("accepts a valid login payload", () => {
     const result = LoginFormSchema.safeParse({
       username: "ada_username",
-      password: "abcdefg1234!"
+      password: "abcdefg1234!",
     });
     expect(result.success).toBe(true);
   });
@@ -50,7 +50,7 @@ describe("SignupFormSchema", () => {
   it("rejects an invalid login payload", () => {
     const result = LoginFormSchema.safeParse({
       username: "n",
-      password: "short"
+      password: "short",
     });
     expect(result.success).toBe(false);
   });

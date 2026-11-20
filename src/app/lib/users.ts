@@ -1,5 +1,5 @@
-import { desc, eq, getTableColumns } from "drizzle-orm";
-import bcrypt from 'bcrypt'
+import { eq, getTableColumns } from "drizzle-orm";
+import bcrypt from "bcrypt";
 import { getDb } from "@/app/lib/db";
 import { memberships, users, type User } from "@/app/lib/schema";
 
@@ -10,28 +10,22 @@ export async function createUser(input: {
 }): Promise<User> {
   const db = await getDb();
   const hashedPassword = await bcrypt.hash(input.password, 10);
-  const [user] = await db.insert(users).values(
-    {
+  const [user] = await db
+    .insert(users)
+    .values({
       username: input.username,
-      displayName: input.displayName, 
-      passwordHash: hashedPassword
-    }).returning();
+      displayName: input.displayName,
+      passwordHash: hashedPassword,
+    })
+    .returning();
   return user;
 }
 
-export async function getUserById(id: string): Promise<User | undefined> {
-  const db = await getDb();
-  return db.query.users.findFirst({ where: eq(users.userId, id) });
-}
-
-export async function getUserByUsername(username: string): Promise<User | undefined> {
+export async function getUserByUsername(
+  username: string,
+): Promise<User | undefined> {
   const db = await getDb();
   return db.query.users.findFirst({ where: eq(users.username, username) });
-}
-
-export async function listUsers(): Promise<User[]> {
-  const db = await getDb();
-  return db.select().from(users).orderBy(desc(users.createdAt));
 }
 
 export async function getMembersByGroupId(groupId: string): Promise<User[]> {

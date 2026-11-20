@@ -1,18 +1,74 @@
-import { desc, eq, and } from "drizzle-orm";
 import { getDb } from "@/app/lib/db";
-import { groups, type Group } from "@/app/lib/schema";
-import { memberships } from "@/app/lib/schema";
-import { getTableColumns } from "drizzle-orm";
+import { rounds, type Round } from "@/app/lib/schema";
+import { and, desc, eq, getTableColumns, inArray, max, sql } from "drizzle-orm";
 
 export async function createRound(input: {
   name: string;
   groupId: string;
   description: string;
-  submissionWindowDays: number;
-  votingWindowDays: number;
-  createdBy: string;
-}): Promise<Group> {
+  submissionDeadline: string;
+  votingDeadline: string;
+}): Promise<Round> {
   const db = await getDb();
-  const [group] = await db.insert(groups).values(input).returning();
-  return group;
+
+  const [round] = await db.transaction(async (tx) => {
+    return tx
+      .insert(rounds)
+      .values({
+        ...input,
+        roundNumber: sql<number>`(SELECT COALESCE(MAX("round_number"), 0) + 1
+                                       FROM "rounds"
+                                       WHERE "group_id" = ${input.groupId})`,
+      })
+      .returning();
+  });
+
+  return round;
+}
+
+export async function getRoundsByGroupId(groupId: string): Promise<Round[]> {
+  const db = await getDb();
+
+  return db
+    .select()
+    .from(rounds)
+    .where(eq(rounds.groupId, groupId))
+    .orderBy(desc(rounds.roundNumber));
+}
+
+export async function getRoundById(
+  roundId: string,
+): Promise<Round | undefined> {
+  const db = await getDb();
+  return db.query.rounds.findFirst({ where: eq(rounds.roundId, roundId) });
+}
+
+export async function getLatestRoundsByGroupIds(
+  groupIds: string[],
+): Promise<Round[]> {
+  if (groupIds.length === 0) {
+    return [];
+  }
+
+  const db = await getDb();
+  const latestRoundNumbers = db
+    .select({
+      groupId: rounds.groupId,
+      latestRoundNumber: max(rounds.roundNumber).as("latest_round_number"),
+    })
+    .from(rounds)
+    .where(inArray(rounds.groupId, groupIds))
+    .groupBy(rounds.groupId)
+    .as("latest_round_numbers");
+
+  return db
+    .select(getTableColumns(rounds))
+    .from(rounds)
+    .innerJoin(
+      latestRoundNumbers,
+      and(
+        eq(rounds.groupId, latestRoundNumbers.groupId),
+        eq(rounds.roundNumber, latestRoundNumbers.latestRoundNumber),
+      ),
+    );
 }

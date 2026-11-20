@@ -1,44 +1,36 @@
-'use server'
+"use server";
 
-import { verifySession } from "@/app/lib/auth/dal"
-import { getUserByUsername } from "@/app/lib/users"
-import { createRound } from "@/app/lib/rounds"
-import { createMembership } from "@/app/lib/memberships"
-import { FormState, CreateRoundFormSchema } from "@/app/lib/definitions"
+import { getCurrentUser } from "@/app/lib/auth/dal";
+import { createRound } from "@/app/lib/rounds";
+import { getGroupById } from "@/app/lib/groups";
+import { type FormState, CreateRoundFormSchema } from "@/app/lib/form-schemas";
 import { notFound, redirect } from "next/navigation";
 
 export async function createRoundAction(
   previousState: FormState,
   formData: FormData,
 ) {
-    const validatedFields = CreateRoundFormSchema.safeParse({
-      name: formData.get('name'),
-      description: formData.get('description'),
-      submissionWindowDays: formData.get('submissionWindowDays'),
-      votingWindowDays: formData.get('votingWindowDays'),
-    })
+  const validatedFields = CreateRoundFormSchema.safeParse({
+    groupId: formData.get("groupId"),
+    name: formData.get("name"),
+    description: formData.get("description"),
+    submissionDeadline: formData.get("submissionDeadline"),
+    votingDeadline: formData.get("votingDeadline"),
+  });
 
-    if (!validatedFields.success) {
-      return {
-        errors: validatedFields.error.flatten().fieldErrors,
-      }
-    }
-    const { username } = await verifySession()
-    const user = await getUserByUsername(username)
+  if (!validatedFields.success) {
+    return {
+      errors: validatedFields.error.flatten().fieldErrors,
+    };
+  }
+  const user = await getCurrentUser();
 
-    if (!user) {
-        redirect('/login')
-    }
+  const group = await getGroupById(validatedFields.data.groupId);
+  if (!group || group.createdBy !== user.userId) {
+    notFound();
+  }
 
-    const round = await createRound({
-        ...validatedFields.data,
-        createdBy: user.userId,
-    })
+  const round = await createRound(validatedFields.data);
 
-    await createMembership({
-        groupId: round.roundId,
-        userId: user.userId,
-    })
-
-    redirect(`/groups/${round.groupId}`)
+  redirect(`/groups/${round.groupId}`);
 }

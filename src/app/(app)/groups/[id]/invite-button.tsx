@@ -19,22 +19,22 @@ export default function InviteButton() {
   }
 
   return (
-  <>
-    <Button
-      color="primary"
-      aria-label="Copy invite link"
-      variant="outlined"
-      startIcon={<ContentCopy />}
-      onClick={copyInviteLink}
-      sx={{
-        width: 120,
-        justifyContent: "center",
-        flexShrink: 0,
-        height: 40,
-      }}
-    >
-      Invite
-    </Button>
+    <>
+      <Button
+        color="primary"
+        aria-label="Copy invite link"
+        variant="outlined"
+        startIcon={<ContentCopy />}
+        onClick={copyInviteLink}
+        sx={{
+          width: 120,
+          justifyContent: "center",
+          flexShrink: 0,
+          height: 40,
+        }}
+      >
+        Invite
+      </Button>
       <Snackbar
         open={status !== "idle"}
         autoHideDuration={3000}
@@ -45,9 +45,11 @@ export default function InviteButton() {
           severity={status === "copied" ? "success" : "error"}
           onClose={() => setStatus("idle")}
         >
-          {status === "copied" ? "Invite link copied" : "Couldn't copy link. Please copy the page URL manually."}
+          {status === "copied"
+            ? "Invite link copied"
+            : "Couldn't copy link. Please copy the page URL manually."}
         </Alert>
       </Snackbar>
-  </>
+    </>
   );
 }

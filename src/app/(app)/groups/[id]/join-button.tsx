@@ -6,7 +6,11 @@ import { joinGroupAction } from "@/app/actions/groups";
 
 function JoinSubmit() {
   const { pending } = useFormStatus();
-  return <Button type="submit" variant="contained" disabled={pending}>{pending ? "Joining..." : "Join"}</Button>;
+  return (
+    <Button type="submit" variant="contained" disabled={pending}>
+      {pending ? "Joining..." : "Join"}
+    </Button>
+  );
 }
 
 export default function JoinButton({ groupId }: { groupId: string }) {

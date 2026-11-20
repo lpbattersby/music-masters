@@ -1,0 +1,1 @@
+DROP INDEX `groups_name_unique`;

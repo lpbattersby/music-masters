@@ -1,4 +1,4 @@
-import AxeBuilder from '@axe-core/playwright';
+import AxeBuilder from "@axe-core/playwright";
 import { expect, test } from "@/test/fixtures";
 
 test.describe("landing page", () => {
@@ -11,5 +11,4 @@ test.describe("landing page", () => {
     await expect(page.getByRole("link", { name: "Login" })).toBeVisible();
     await expect(page.getByRole("link", { name: "Sign Up" })).toBeVisible();
   });
-
 });
