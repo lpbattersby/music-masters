@@ -1,7 +1,10 @@
 import { getCurrentUser, getCurrentUserGroup } from "@/app/lib/auth/dal";
 import { getMembersByGroupId } from "@/app/lib/users";
 import { getRoundsByGroupId } from "@/app/lib/rounds";
-import { getSongSubmissionByRoundAndUser } from "@/app/lib/submissions";
+import {
+  getSongSubmissionByRoundAndUser,
+  getSubmissionsByRoundId,
+} from "@/app/lib/submissions";
 import GroupInfo from "./group-info";
 import Link from "next/link";
 import Paper from "@mui/material/Paper";
@@ -14,9 +17,11 @@ import { formatRelativeTime } from "@/app/lib/date-utils";
 import DialogButton from "@/app/dialog/dialog-button";
 import CreateRoundForm from "./round-form";
 import SongSubmissionForm from "./song-submission-form";
+import SongPlaylist from "./song-playlist";
 import { RoundState, getRoundState } from "@/app/lib/helpers";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
+import Divider from "@mui/material/Divider";
 
 export default async function GroupPage({
   params,
@@ -39,6 +44,11 @@ export default async function GroupPage({
     latestRound && isMember && roundState === RoundState.Submitting
       ? await getSongSubmissionByRoundAndUser(latestRound.roundId, user.userId)
       : undefined;
+  const submissions =
+    latestRound &&
+    (roundState === RoundState.Voting || roundState === RoundState.Finished)
+      ? await getSubmissionsByRoundId(latestRound.roundId)
+      : [];
 
   return (
     <main className="app-content flex flex-col gap-6">
@@ -104,7 +114,6 @@ export default async function GroupPage({
             <Button
               variant="contained"
               color="info"
-              className="gradient-border"
               sx={{ width: "100%" }}
             >
               Vote{" "}
@@ -124,6 +133,15 @@ export default async function GroupPage({
             </Button>
           )}
         </Stack>
+        {submissions.length > 0 && (
+          <>
+            <Divider sx={{ my: 3 }} />
+            <SongPlaylist
+              songs={submissions}
+              revealNames={roundState === RoundState.Finished}
+            />
+          </>
+        )}
       </Paper>
       <Paper
         component="section"

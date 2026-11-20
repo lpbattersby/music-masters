@@ -58,3 +58,4 @@ Music Masters is a Next.js App Router application for groups to run music-submis
 
 - Don't leave random comments with code, the code should be self explainatory
 - Don't run terminal commands that require interaction or :q to exit
+- Don't commit to git without specific approval

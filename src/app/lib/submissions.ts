@@ -1,6 +1,6 @@
-import { and, eq } from "drizzle-orm";
+import { and, asc, eq } from "drizzle-orm";
 import { getDb } from "@/app/lib/db";
-import { songSubmissions, type SongSubmission } from "@/app/lib/schema";
+import { songSubmissions, users, type SongSubmission } from "@/app/lib/schema";
 
 export async function getSongSubmissionByRoundAndUser(
   roundId: string,
@@ -19,6 +19,29 @@ export async function getSongSubmissionByRoundAndUser(
     .limit(1);
 
   return submission;
+}
+
+export interface SongWithSubmitter {
+  submissionId: string;
+  songUrl: string;
+  displayName: string;
+}
+
+export async function getSubmissionsByRoundId(
+  roundId: string,
+): Promise<SongWithSubmitter[]> {
+  const db = await getDb();
+  const rows = await db
+    .select({
+      submissionId: songSubmissions.submissionId,
+      songUrl: songSubmissions.songUrl,
+      displayName: users.displayName,
+    })
+    .from(songSubmissions)
+    .innerJoin(users, eq(songSubmissions.userId, users.userId))
+    .where(eq(songSubmissions.roundId, roundId))
+    .orderBy(asc(users.displayName));
+  return rows;
 }
 
 export async function upsertSongSubmission(input: {

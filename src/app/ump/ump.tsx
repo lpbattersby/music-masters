@@ -109,19 +109,18 @@ export default function SoundCloudPlayer({ id, url }: Props) {
   }, [url]);
 
   return (
-    <Card variant="outlined" sx={{ borderRadius: 3 }}>
-      <CardContent>
-        <Stack spacing={2}>
-          <Typography>SoundCloud</Typography>
-
+    <Box sx={{ p:0 }}>
+      <CardContent sx={{ p: 0, m: 0 }}>
+        <Stack>
           {error && <Alert severity="error">{error}</Alert>}
 
           {embedUrl && (
             <Box
               sx={{
                 position: "relative",
-                borderRadius: 2,
+                borderRadius: 1,
                 overflow: "hidden",
+                p: 0,
               }}
             >
               <Box
@@ -136,6 +135,7 @@ export default function SoundCloudPlayer({ id, url }: Props) {
                 sx={{
                   border: 0,
                   display: "block",
+                  p: 0,
                 }}
               />
 
@@ -149,7 +149,7 @@ export default function SoundCloudPlayer({ id, url }: Props) {
                     justifyContent: "center",
                     bgcolor: "rgba(255, 255, 255, 0.7)",
                     backdropFilter: "blur(2px)",
-                    borderRadius: 2,
+                    borderRadius: 1,
                     zIndex: 10,
                   }}
                 >
@@ -166,6 +166,6 @@ export default function SoundCloudPlayer({ id, url }: Props) {
           )}
         </Stack>
       </CardContent>
-    </Card>
+    </Box>
   );
 }
