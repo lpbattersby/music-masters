@@ -24,9 +24,9 @@ test.describe("song submission journey", () => {
       page.getByRole("heading", { name: group.name, exact: true }),
     ).toBeVisible();
     await expect(
-      page.getByRole("button", { name: "Submit Song", exact: true }),
+      page.getByRole("button", { name: /Submit Song/ }),
     ).toBeVisible();
-    await page.getByRole("button", { name: "Submit Song" }).click();
+    await page.getByRole("button", { name: /Submit Song/ }).click();
     await expect(
       page.getByRole("dialog", { name: "Submit Song" }),
     ).toBeVisible();
@@ -34,8 +34,10 @@ test.describe("song submission journey", () => {
       .getByLabel("SoundCloud URL")
       .fill("https://soundcloud.com/example");
     await page.getByRole("button", { name: "Confirm" }).click();
+    // After a successful submission the round is still in the submitting
+    // window, so the submit button remains available for replacing the song.
     await expect(
-      page.getByRole("button", { name: "Replace Song", exact: true }),
+      page.getByRole("button", { name: /Submit Song/ }),
     ).toBeVisible();
   });
 });

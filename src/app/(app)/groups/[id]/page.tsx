@@ -74,9 +74,7 @@ export default async function GroupPage({
               >
                 <CreateRoundForm group={group} />
               </DialogButton>
-            ) : (
-              <Button variant="outlined">Create round</Button>
-            ))}
+            ) : null)}
           {roundState === RoundState.Submitting && latestRound && (
             <DialogButton
               id={`submit-song-dialog-${latestRound.roundId}`}
@@ -115,8 +113,8 @@ export default async function GroupPage({
                 variant="caption"
                 color="text.secondary"
                 sx={{ paddingLeft: 1 }}
-                  >
-                    Due in {formatRelativeTime(latestRound.votingDeadline)}
+              >
+                Due in {formatRelativeTime(latestRound.votingDeadline)}
               </Typography>
             </Button>
           )}

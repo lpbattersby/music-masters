@@ -187,6 +187,7 @@ test.describe("join group journey", () => {
     await expect(
       page.getByRole("button", { name: "Join", exact: true }),
     ).toBeVisible();
+    // Non-owners do not get a "Create round" button.
     await expect(
       page.getByRole("button", { name: "Create round", exact: true }),
     ).toHaveCount(0);
@@ -204,9 +205,10 @@ test.describe("join group journey", () => {
         exact: true,
       }),
     ).toBeVisible();
+    // Non-owners still do not get a "Create round" button after joining.
     await expect(
       page.getByRole("button", { name: "Create round", exact: true }),
-    ).toBeDisabled();
+    ).toHaveCount(0);
 
     await page.goto("/dashboard");
     await expect(
